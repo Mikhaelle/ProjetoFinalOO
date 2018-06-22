@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 public class Despesa {
 
 	double valorTotal;
@@ -15,12 +17,12 @@ public class Despesa {
 
 	}
 
-	Categoria a = new Categoria("telecomunicações");
 
-	public boolean novaCategoria(Categoria a) {
-		boolean resposta = categorias.add(a);
+	public boolean novaCategoria() {
+		String nomeCategoria = JOptionPane.showInputDialog(null, "Qual o nome da categoria?");
+		Categoria cat = new Categoria(nomeCategoria);
+		boolean resposta = categorias.add(cat);
 		return resposta;
-		// algoritimo para matricular aluno
 	}
 
 	public boolean retirarCategoria(Categoria a) {
@@ -38,6 +40,11 @@ public class Despesa {
 		
 			}
 			return resposta;
+	}
+	
+	public int numCategorias()
+	{
+		return categorias.size();
 	}
 	//public double CalculoValorTotal() {
 	//	return 0;

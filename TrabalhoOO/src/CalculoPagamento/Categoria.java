@@ -1,6 +1,5 @@
 package CalculoPagamento;
 
-import java.util.ArrayList;
 
 public class Categoria {
 	private String descricaoCategoria;
@@ -12,9 +11,9 @@ public class Categoria {
 		
 	}
 	
-	ArrayList subs = new ArrayList<SubCategoria>();
+//	ArrayList subs = new ArrayList<SubCategoria>();
 
-	// Pegar a descrição da categoria
+	// Pegar a descriï¿½ï¿½o da categoria
 	public String getDescricaoCategoria() {
 		return descricaoCategoria;
 	}
