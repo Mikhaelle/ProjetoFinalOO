@@ -10,13 +10,12 @@ public class Despesa {
 
 	double valorTotal;
 
-	List<Categoria> categorias;
+	public List<Categoria> categorias;
 
 	public Despesa() {
 		categorias = new LinkedList<Categoria>();
 
 	}
-
 
 	public boolean novaCategoria() {
 		String nomeCategoria = JOptionPane.showInputDialog(null, "Qual o nome da categoria?");
@@ -25,33 +24,43 @@ public class Despesa {
 		return resposta;
 	}
 
-	public boolean retirarCategoria(Categoria a) {
-			boolean resposta = categorias.remove(a);
-			return resposta;
-			// algoritimo para desmatricular o aluno
+	public boolean retirarCategoria(Categoria cat) {
+		boolean resposta = categorias.remove(cat);
+		return resposta;
 	}
 
 	public Categoria pesquisarCategoria(String descricao) {
-			Categoria resposta = null;
-			for (Categoria a : categorias) {
-				if (a.getDescricaoCategoria().equalsIgnoreCase(descricao)) {
-					resposta = a;
-				}
-		
+		Categoria resposta = null;
+		for (Categoria a : categorias) {
+			if (a.getDescricaoCategoria().equalsIgnoreCase(descricao)) {
+				resposta = a;
+				JOptionPane.showMessageDialog(null, "Categoria excluida!");
 			}
-			return resposta;
+		}
+		
+		return resposta;
 	}
-	
-	public int numCategorias()
-	{
+
+	public int numCategorias() {
 		return categorias.size();
 	}
-	//public double CalculoValorTotal() {
-	//	return 0;
-	//}
 
-	//public double getValor() {
-	//	return valorTotal;
-	//}
+	public String getNomeCategoria() {
+		Iterator<Categoria> it = categorias.iterator();
+		String resultado = "";
+		while (it.hasNext()) {
+			Categoria cat = it.next();
+			resultado = resultado + (cat.getDescricaoCategoria() + "\n");
+		}
+		return resultado;
+	}
+
+	// public double CalculoValorTotal() {
+	// return 0;
+	// }
+
+	// public double getValor() {
+	// return valorTotal;
+	// }
 
 }

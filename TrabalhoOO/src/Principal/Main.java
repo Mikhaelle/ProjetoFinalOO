@@ -13,10 +13,12 @@ public class Main {
 		String nomeRep = JOptionPane.showInputDialog("Qual o nome da republica ?");
 		Republica rep = new Republica(nomeRep);
 
-		JOptionPane.showMessageDialog(null, "O nome da republica Ã©: " + rep.getNome());
+		JOptionPane.showMessageDialog(null, "O nome da republica é: " + rep.getNome());
 		
 		rep.cadastroMorador();
 		rep.cadastrarDespesa();
+		rep.pesquisarCategoraDespesa();
+		rep.retirarCategoraDespesa();
 	}
 
 }
