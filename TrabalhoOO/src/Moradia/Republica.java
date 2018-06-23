@@ -33,6 +33,7 @@ public class Republica {
 
 			Morador morador = new Morador(nomeMorador, emailMorador, rendMorador);
 			moradores.add(morador);
+			
 			opcao = JOptionPane.showConfirmDialog(null, "Deseja cadastrar um morador ?");
 
 		}
@@ -45,16 +46,17 @@ public class Republica {
 
 		while (opcao == JOptionPane.YES_OPTION) {
 			boolean respostaCriarCategoria = desp.novaCategoria();
-			opcao = JOptionPane.showConfirmDialog(null, "Deseja cadastrar uma categoria de despesa ?");
 			if (respostaCriarCategoria) {
-				JOptionPane.showMessageDialog(null, "Categora cadastrada");
+				JOptionPane.showMessageDialog(null, "Categoria cadastrada");
+				
 			}
+			opcao = JOptionPane.showConfirmDialog(null, "Deseja cadastrar uma nova categoria de despesa ?");
 		}
 		JOptionPane.showMessageDialog(null, "Foram cadastradas " + desp.numCategorias() + " categorias de despesa");
 		JOptionPane.showMessageDialog(null, "As categorias cadastradas foram :\n" + desp.getNomeCategoria());
 	}
 
-	public void pesquisarCategoraDespesa() {
+	public void pesquisarCategoriaDespesa() {
 		int opcao = JOptionPane.showConfirmDialog(null, "Deseja pesquisar uma categoria de despesa?");
 
 		while (opcao == JOptionPane.YES_OPTION) {
@@ -70,7 +72,7 @@ public class Republica {
 		
 	}
 	
-	public void retirarCategoraDespesa() {
+	public void retirarCategoriaDespesa() {
 		int opcao = JOptionPane.showConfirmDialog(null, "Deseja excluir uma categoria de despesa?");
 
 		while (opcao == JOptionPane.YES_OPTION) {
@@ -81,6 +83,7 @@ public class Republica {
 			}
 			else {
 				boolean respostaRetirarCategoria = desp.retirarCategoria(respostaPesquisarCategoria);
+				JOptionPane.showMessageDialog(null, "Categoria excluida!");
 				JOptionPane.showMessageDialog(null, "Existem " + desp.numCategorias() + " categorias de despesa");
 				JOptionPane.showMessageDialog(null, "As categorias cadastradas são :\n" + desp.getNomeCategoria());
 			}
@@ -88,4 +91,9 @@ public class Republica {
 		}
 		
 	}
+	
+	public void valorTotalDespesas() {
+		JOptionPane.showMessageDialog(null, "O valor total das despesas é de : " + desp.getValor());
+	}
+	
 }

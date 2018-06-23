@@ -15,10 +15,11 @@ public class Main {
 
 		JOptionPane.showMessageDialog(null, "O nome da republica é: " + rep.getNome());
 		
-		rep.cadastroMorador();
+		//rep.cadastroMorador();
 		rep.cadastrarDespesa();
-		rep.pesquisarCategoraDespesa();
-		rep.retirarCategoraDespesa();
+		//rep.pesquisarCategoriaDespesa();
+		//rep.retirarCategoriaDespesa();
+		rep.valorTotalDespesas();
 	}
 
 }
