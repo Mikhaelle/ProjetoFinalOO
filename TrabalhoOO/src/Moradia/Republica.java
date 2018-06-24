@@ -22,7 +22,10 @@ public class Republica {
 	}
 
 	List<Morador> moradores = new LinkedList<Morador>();
-
+	
+	public List<Morador> getMoradores(){
+		return moradores;
+	}
 	public void cadastroMorador() {
 		int opcao = JOptionPane.showConfirmDialog(null, "Deseja cadastrar um morador ?");
 
