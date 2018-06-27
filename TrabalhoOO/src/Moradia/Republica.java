@@ -72,23 +72,7 @@ public class Republica {
 		}
 		
 	}
-	
-	public void retirarCategoraDespesa() {
-		int opcao = JOptionPane.showConfirmDialog(null, "Deseja excluir uma categoria de despesa?");
 
-		while (opcao == JOptionPane.YES_OPTION) {
-			String nomeCategoria = JOptionPane.showInputDialog(null, "Qual categoria deseja excluir?");
-			Categoria respostaPesquisarCategoria = desp.pesquisarCategoria(nomeCategoria);
-			if (respostaPesquisarCategoria == null) {
-				JOptionPane.showMessageDialog(null, "Não existe categoria com esse nome");
-			}
-			else {
-				boolean respostaRetirarCategoria = desp.retirarCategoria(respostaPesquisarCategoria);
-				JOptionPane.showMessageDialog(null, "Existem " + desp.numCategorias() + " categorias de despesa");
-				JOptionPane.showMessageDialog(null, "As categorias cadastradas são :\n" + desp.getNomeCategoria());
-			}
-			opcao = JOptionPane.showConfirmDialog(null, "Deseja excluir uma categoria de despesa?");
-		}
-		
-	}
+	
+	
 }
