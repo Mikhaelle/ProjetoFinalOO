@@ -8,7 +8,6 @@ import javax.swing.JOptionPane;
 
 public class Categoria {
 	private String descricaoCategoria;
-	private double valorCat = 0;
 
 	public Categoria(String desc) {
 		descricaoCategoria = desc;
@@ -22,89 +21,47 @@ public class Categoria {
 
 	List<SubCategoria> subs = new LinkedList<SubCategoria>(); // Lista de subcategorias
 
-	//Metodo para cadastro de subcategorias
-	public void cadastrarSubcategoria() {
+	//Metodo para cadastro de subcategorias, retorna verdadeiro ou falso ----- EXISTE EXCEÇÃO FALSO
+	public boolean cadastrarSubcategoria(String nomeSubcategoria) {
 
-		int opcao = JOptionPane.showConfirmDialog(null, "Deseja cadastrar uma subcategoria?");
+			SubCategoria sub = new SubCategoria(nomeSubcategoria, this);
+			
+			return subs.add(sub);
 
-		while (opcao == JOptionPane.YES_OPTION) {
-
-			String nomeSubcategoria = JOptionPane.showInputDialog("Qual o nome da subCategoria?");
-			double valorSubcategoria = Double
-					.parseDouble(JOptionPane.showInputDialog("Qual o valor da despesa da subcategoria?"));
-
-			SubCategoria sub = new SubCategoria(nomeSubcategoria, valorSubcategoria);
-			subs.add(sub);
-
-			opcao = JOptionPane.showConfirmDialog(null, "Deseja cadastrar uma subcategoria?");
 		}
 		
-		JOptionPane.showMessageDialog(null, "Foram cadastradas" + subs.size() + " Subcategorias");
-		
-		double valorTotal = calculoValorTotal(); //Chama o calculo total dos valores das subcategorias
-		JOptionPane.showMessageDialog(null, "Valor total de despesas para essa categoria é: \n" + valorTotal);
-
-	}
-
-	//retira as subcategoria
-	public boolean retirarSubCategoria(SubCategoria sub) {
-		boolean resposta = subs.remove(sub);
-		return resposta;
-	}
-
 	//pesquisa categoria por descricao
-	public SubCategoria pesquisarSubCategoriaDesc(String descricao) {
-		SubCategoria resposta = null;
-		for (SubCategoria a : subs) {
-			
-			if (a.getDescricaoSubCategoria().equalsIgnoreCase(descricao)) {
+		public SubCategoria pesquisarSubCategoria(String descricao) {
+			SubCategoria resposta = null;
+			for (SubCategoria sub : subs) {
 				
-				resposta = a;
+				if (sub.getDescricaoSubCategoria().equalsIgnoreCase(descricao)) {
+					
+					resposta = sub;
+				}
 			}
+
+			return resposta;
 		}
 
-		return resposta;
-	}
-	
-	//pesquisa categoria por valor
-	public SubCategoria pesquisarSubCategoriaVal(double valor) {
-		SubCategoria resposta = null;
-		for (SubCategoria a : subs) {
-			
-			if (a.getValorCat() == valor) {
-				
-				resposta = a;
-			}
+	//retirar as subcategoria ---- TRATAR EXCEÇÃO EM ELSE "HOUVE ERRO"
+	public String retirarSubCategoria(String nomeCategoria) {
+		SubCategoria sub = pesquisarSubCategoria(nomeCategoria);
+		
+		if (subs == null) {
+			return "Subcategoria não encontrada";
 		}
 		
-		return resposta;
-	}
-
-	// Calcular valor total de subcategorias na categoria
-	public double calculoValorTotal() {
-		Iterator<SubCategoria> it = subs.iterator();
-		double valorTotalSub = 0;
-		while (it.hasNext()) {
-			SubCategoria sub = it.next();
-			valorTotalSub = valorTotalSub + (sub.getValorCat());
+		if (subs.remove(sub)) {
+			return "Subcategoria removida";
 		}
-		return valorTotalSub;
-	}
-
-	// pegar valor total da categoria
-	public double getValorCat() {
-		return valorCat = calculoValorTotal();
+		
+		else 
+			return "Houve um erro";
+		
 	}
 	
-	//pegar as subcategorias com nome e valor
-	public String getNomeValCategoria() {
-		Iterator<SubCategoria> it = subs.iterator();
-		String resultado = "";
-		while (it.hasNext()) {
-			SubCategoria sub = it.next();
-			resultado = resultado + (sub.getDescricaoSubCategoria()+ ":" + sub.getValorCat() + " R$" + "\n");
-		}
-		return resultado;
-	}
+	
+	
 
 }

@@ -1,22 +1,27 @@
 package CalculoPagamento;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.LinkedBlockingDeque;
+
 public class SubCategoria {
 	private String descricaoSubCategoria;
-	private double valorCat;
+	private Categoria categoria;
 	
-	public SubCategoria(String dec, double v) {
+	
+	List <Despesa> desps = new LinkedList<Despesa>();
+	
+	public SubCategoria(String dec, Categoria c) {
 		descricaoSubCategoria = dec;
-		valorCat = v;
+		categoria = c;
 	}
 
 	public String getDescricaoSubCategoria() {
 		return descricaoSubCategoria;
 	}
-
-
-	public double getValorCat() {
-		return valorCat;
+	
+	public void adicionarDespesa(Despesa desp) {
+		desps.add(desp);
 	}
-
 	
 }

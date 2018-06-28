@@ -1,5 +1,6 @@
 package Moradia;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,11 +8,15 @@ import javax.swing.JOptionPane;
 
 import CalculoPagamento.Categoria;
 import CalculoPagamento.Despesa;
+import CalculoPagamento.SubCategoria;
 
 public class Republica {
 
 	private String nome;
-	Despesa desp = new Despesa();
+
+	public List<Categoria> categorias = new LinkedList<Categoria>();
+
+	public List<Despesa> despesas = new LinkedList<Despesa>();
 
 	public Republica(String n) {
 		nome = n;
@@ -22,10 +27,11 @@ public class Republica {
 	}
 
 	List<Morador> moradores = new LinkedList<Morador>();
-	
-	public List<Morador> getMoradores(){
+
+	public List<Morador> getMoradores() {
 		return moradores;
 	}
+
 	public void cadastroMorador() {
 		int opcao = JOptionPane.showConfirmDialog(null, "Deseja cadastrar um morador ?");
 
@@ -42,37 +48,68 @@ public class Republica {
 		JOptionPane.showMessageDialog(null, "Foram cadastrados " + moradores.size() + " moradores");
 	}
 
-	public void cadastrarDespesa() {
+	// retorna verdadeiro ou falso quando cria nova categoria ---- EXISTE EXCEÇÃO
+	public boolean novaCategoria(String nomeCategoria) {
 
-		int opcao = JOptionPane.showConfirmDialog(null, "Deseja cadastrar uma categoria de despesa ?");
+		Categoria cat = new Categoria(nomeCategoria);
 
-		while (opcao == JOptionPane.YES_OPTION) {
-			boolean respostaCriarCategoria = desp.novaCategoria();
-			opcao = JOptionPane.showConfirmDialog(null, "Deseja cadastrar uma categoria de despesa ?");
-			if (respostaCriarCategoria) {
-				JOptionPane.showMessageDialog(null, "Categora cadastrada");
-			}
-		}
-		JOptionPane.showMessageDialog(null, "Foram cadastradas " + desp.numCategorias() + " categorias de despesa");
-		JOptionPane.showMessageDialog(null, "As categorias cadastradas foram :\n" + desp.getNomeCategoria());
+		return categorias.add(cat);
 	}
 
-	public void pesquisarCategoraDespesa() {
-		int opcao = JOptionPane.showConfirmDialog(null, "Deseja pesquisar uma categoria de despesa?");
+	// retorna a categoria pesquisada
+	public Categoria pesquisarCategoria(String nomeCategoria) {
+		Categoria resposta = null;
+		for (Categoria cat : categorias) {
 
-		while (opcao == JOptionPane.YES_OPTION) {
-			String nomeCategoria = JOptionPane.showInputDialog(null, "Qual o nome da categoria?");
-			Categoria respostaPesquisarCategoria = desp.pesquisarCategoria(nomeCategoria);
-			if (respostaPesquisarCategoria == null) {
-				JOptionPane.showMessageDialog(null, "Não existe categoria com esse nome");
-			} else {
-				JOptionPane.showMessageDialog(null, "Categoria " + nomeCategoria + " encontrada.");
+			if (cat.getDescricaoCategoria().equalsIgnoreCase(nomeCategoria)) {
+
+				resposta = cat;
 			}
-			opcao = JOptionPane.showConfirmDialog(null, "Deseja pesquisar uma categoria de despesa?");
 		}
-		
+
+		return resposta;
 	}
 
+	// retirar categoria, retorna uma string
+	public String retirarCategoria(String nomeCategoria) {
+
+		Categoria cat = pesquisarCategoria(nomeCategoria);
+
+		if (cat == null) {
+			return "Categoria não encontrada";
+		}
+
+		if (categorias.remove(cat)) {
+			return "Categoria removida";
+		}
+
+		else
+			return "Houve um erro";
+
+	}
+
+	// cadastra uma despesa, a pessoa coloca o nome da subcategoria e o valor
+	// é procurado em todas as categroias uma subcategoria com o nome, quando
+	// encontrada ela adiciona a despesa
+	public boolean cadastrarDespesa(String nomeSubCategoira, double valor) {
+		Despesa desp = null;
+
+		for (Categoria cat : categorias) {
+
+			SubCategoria subCat = cat.pesquisarSubCategoria(nomeSubCategoira);
+
+			if (subCat != null) {
+				desp = new Despesa(valor, subCat, this);
+				subCat.adicionarDespesa(desp); // adc despesa na subCategoria
+				return despesas.add(desp); // retorna verdadeiro para despesa cadastrada
+
+			}
+
+		}
+
+		return false; // despesa não cadastrada, porque o nome da subcategoria nao foi encontrado
+		// tratar na main
+	}
 	
 	
 }

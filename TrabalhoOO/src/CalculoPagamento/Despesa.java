@@ -6,53 +6,36 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import Moradia.Republica;
+
 public class Despesa {
 
-	double valorTotal;
+	double valor;
+	SubCategoria sub;
+	Republica rep;
 
-	public List<Categoria> categorias;
-
-	public Despesa() {
-		categorias = new LinkedList<Categoria>();
+	public Despesa(double v, SubCategoria a, Republica r) {
+		valor = v;
+		sub = a;
+		rep = r;
 
 	}
 
-	// cadastra nova categoria
-	public boolean novaCategoria() {
-		String nomeCategoria = JOptionPane.showInputDialog(null, "Qual o nome da categoria?");
-
-		Categoria cat = new Categoria(nomeCategoria);
-		boolean resposta = categorias.add(cat);
-
-		cat.cadastrarSubcategoria();
-		return resposta;
+	public double getValor() {
+		return valor;
 	}
 
-	// Retirar uma categoria
-	public boolean retirarCategoria(Categoria cat) {
-		boolean resposta = categorias.remove(cat);
-		return resposta;
+	public SubCategoria getSub() {
+		return sub;
 	}
 
-	// pesquisar uma categoria
-	public Categoria pesquisarCategoria(String descricao) {
-		Categoria resposta = null;
-		for (Categoria a : categorias) {
-			if (a.getDescricaoCategoria().equalsIgnoreCase(descricao)) {
-				resposta = a;
-				JOptionPane.showMessageDialog(null, "Categoria excluida!");
-			}
-		}
 
-		return resposta;
+	public Republica getRep() {
+		return rep;
 	}
 
-	// pegar numero de categorias
-	public int numCategorias() {
-		return categorias.size();
-	}
 
-	// pegar nome das categorias
+	/*// pegar nome das categorias
 	public String getNomeCategoria() {
 		Iterator<Categoria> it = categorias.iterator();
 		String resultado = "";
@@ -61,23 +44,7 @@ public class Despesa {
 			resultado = resultado + (cat.getDescricaoCategoria() + "\n");
 		}
 		return resultado;
-	}
+	}*/
 
-	// calculo valor total de despesas
-	public double CalculoValorTotal() {
-		double valorTotalDespesa = 0;
-		Iterator<Categoria> it = categorias.iterator();
-		while (it.hasNext()) {
-			Categoria cat = it.next();
-			valorTotalDespesa = valorTotalDespesa + cat.calculoValorTotal();
-		}
-
-		return valorTotalDespesa;
-	}
-
-	// metodo para retornar o valor total
-	public double getValor() {
-		return valorTotal = CalculoValorTotal();
-	}
 
 }
