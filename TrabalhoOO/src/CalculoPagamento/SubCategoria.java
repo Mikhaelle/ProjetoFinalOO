@@ -9,7 +9,8 @@ public class SubCategoria {
 	private Categoria categoria;
 	
 	
-	List <Despesa> desps = new LinkedList<Despesa>();
+	
+	LinkedList <Despesa> desps = new LinkedList<Despesa>();
 	
 	public SubCategoria(String dec, Categoria c) {
 		descricaoSubCategoria = dec;
@@ -19,7 +20,16 @@ public class SubCategoria {
 	public String getDescricaoSubCategoria() {
 		return descricaoSubCategoria;
 	}
-	
+	public double getTotalSub() {
+		double totalSub=0;
+		for (int i=0;i<desps.size();i++) {
+			totalSub=totalSub+desps.get(i).valor;
+		}
+		return totalSub;
+	}
+	public LinkedList<Despesa> getDesps() {
+		return desps;
+	}
 	public void adicionarDespesa(Despesa desp) {
 		desps.add(desp);
 	}
