@@ -3,7 +3,7 @@ package Morador;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
-import java.awt.List;
+import java.util.List;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -63,10 +63,10 @@ import java.util.logging.Logger;
 		            FileWriter fileWriter = new FileWriter(fileName, false);
 		            PrintWriter printWriter = new PrintWriter(fileWriter);
 		            
-		            //Utilizo o método print() para escrever na
+		            //Utilizando o método print() para escrever na
 		            // mesma linha e um ponto e vírgula no final.
 		            //O println forçará a troca de linha
-		            // para o próximo Morador.
+		            // para o próximo morador.
 		            
 		            int sz = obj.cadastro.size();
 		            
@@ -87,9 +87,9 @@ import java.util.logging.Logger;
 		            String linha = "";
 
 		            //Lista que irá guardar o resultado, ou seja,
-		            // cada linha do arquivo que corresponde a um Morador
+		            // cada linha do arquivo que corresponde a um User
 		           
-		            ArrayList result = new ArrayList();
+		            List result = new ArrayList();
 
 		            while ((linha = bufferedReader.readLine()) != null) {
 		                System.out.println(linha);
@@ -102,13 +102,12 @@ import java.util.logging.Logger;
 		            bufferedReader.close();
 
 		            for (String s : result) {
-		                //Uso do método split da classe String
+		                //Usamos o método split da classe String
 		                // para separar as partes entre os ponto e vírgulas.
-		                //Guardando o resultado em um array
-		                
-				 String[] user = s.split(";");
+		                //Guardamos o resultado em um array
+		                String[] user = s.split(";");
 
-		                //Criando um objeto Morador e setando em seus atributos
+		                //Criamos um objeto User e setamos em seus atributos
 		                //as posições correspondentes do array
 		              
 		                Morador m1 = new Morador(s, s, rendimento);
@@ -118,7 +117,7 @@ import java.util.logging.Logger;
 		                m1.setRendimento(Integer.valueOf(user[2]));
 
 		                //exibe o conteúdo do objeto m1
-		                System.out.println(m1.toString());
+		                System.out.println(m.toString());
 		            }
 		        } catch (IOException e) {
 		            e.printStackTrace();
@@ -127,11 +126,8 @@ import java.util.logging.Logger;
 		    }
 		
 			JOptionPane.showMessageDialog(null,"Dados cadastrados com sucesso!");	
-	}
+		}
 }
-		
-		
-
 
 
 	
