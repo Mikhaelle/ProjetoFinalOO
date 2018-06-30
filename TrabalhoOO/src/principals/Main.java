@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import CalculoPagamento.Categoria;
+import CalculoPagamento.Despesa;
+import CalculoPagamento.SubCategoria;
 import Moradia.Morador;
 import Moradia.Republica;
 
@@ -106,6 +109,23 @@ public class Main {
 		return rep;
 	}
 	
+	private static int editarDespesas(LinkedList<Republica> rep, int escolhaRep) {
+		String mensagem="Há um total de R$"+rep.get(escolhaRep).getValorDespesas()+" em despesas.\n As despesas estão divididas em "+rep.get(escolhaRep).categorias.size()+" categorias:\n\nSão essas:";
+		String listaCat="";
+		String[] opcoesCat=new String[rep.get(escolhaRep).categorias.size()+2];
+		for(int i=0;i<rep.get(escolhaRep).categorias.size();i++) {
+			listaCat=listaCat+"\n"+rep.get(escolhaRep).categorias.get(i).getDescricaoCategoria();
+			listaCat=listaCat+"     =>    "+rep.get(escolhaRep).categorias.get(i).getTotalCategoria();
+			opcoesCat[i]=rep.get(escolhaRep).categorias.get(i).getDescricaoCategoria();	
+		}
+		opcoesCat[rep.get(escolhaRep).categorias.size()]="Criar nova Categoria";
+		opcoesCat[rep.get(escolhaRep).categorias.size()+1]="Voltar";
+		
+		int escolhaCat=JOptionPane.showOptionDialog(null, mensagem+listaCat, "Editar Despesas", 0, 1, null, opcoesCat, null);
+		
+		return escolhaCat;
+	}
+	
 	public static void main(String[] args) {
 		// core
 		int escolhaRep = 0;
@@ -134,7 +154,33 @@ public class Main {
 						rep=editarMoradores(rep,escolhaRep);
 					}
 					if(escolha==2) {
-						//despesas
+						int escolhaCat=0;
+						while(escolhaCat>=0&&escolhaCat<=rep.get(escolhaRep).categorias.size()) {
+							escolhaCat=editarDespesas(rep,escolhaRep);
+							
+							if(escolhaCat<rep.get(escolhaRep).categorias.size()&&escolhaCat!=-1) {
+								Categoria cat=rep.get(escolhaRep).categorias.get(escolhaCat);
+								double parcelaCat=100*rep.get(escolhaRep).getValorDespesas()/cat.getTotalCategoria();
+								String mensagem="A categoria "+cat.getDescricaoCategoria()+" é responsável por "+parcelaCat+"% das despesas da república "+rep.get(escolhaRep).getNome();
+								String listaSub="";
+								for(int i=0;i<cat.getSubs().size();i++) {
+									SubCategoria subCat=cat.getSubs().get(i);
+									listaSub+="\n"+subCat.getDescricaoSubCategoria()+"     =>    "+subCat.getTotalSub()+"\n 	Despesas:";
+									for(int i2=0;i2<subCat.getDesps().size();i++) {
+										Despesa desp=subCat.getDesps().get(i2);
+										listaSub+="/n		"+desp.getValor();
+									}
+								}
+								String[] opcaoCat=new String[1];
+								opcaoCat[0]="O O O";
+								JOptionPane.showOptionDialog(null, listaSub, "Editar Categorias", 0, 1, null, opcaoCat, null);
+								
+									
+							}
+							if(escolhaCat==rep.get(escolhaRep).categorias.size()) {
+								rep.get(escolhaRep).categorias.add(rep.get(escolhaRep).novaCategoria(JOptionPane.showInputDialog("Digite o nome da nova categoria:")));
+							}
+						}
 					}
 					if(escolha==3) {
 						republicaEscolhida=false;
@@ -146,4 +192,6 @@ public class Main {
 
 		}
 	}
+
+	
 }

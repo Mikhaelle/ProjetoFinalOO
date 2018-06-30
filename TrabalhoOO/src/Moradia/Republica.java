@@ -56,11 +56,11 @@ public class Republica {
 	}
 
 	// retorna verdadeiro ou falso quando cria nova categoria ---- EXISTE EXCEÇÃO
-	public boolean novaCategoria(String nomeCategoria) {
+	public Categoria novaCategoria(String nomeCategoria) {
 
 		Categoria cat = new Categoria(nomeCategoria);
 
-		return categorias.add(cat);
+		return cat;
 	}
 
 	// retorna a categoria pesquisada
@@ -98,12 +98,12 @@ public class Republica {
 	// cadastra uma despesa, a pessoa coloca o nome da subcategoria e o valor
 	// é procurado em todas as categroias uma subcategoria com o nome, quando
 	// encontrada ela adiciona a despesa
-	public boolean cadastrarDespesa(String nomeSubCategoira, double valor) {
+	public boolean cadastrarDespesa(String nomeSubCategoria, double valor) {
 		Despesa desp = null;
 
 		for (Categoria cat : categorias) {
 
-			SubCategoria subCat = cat.pesquisarSubCategoria(nomeSubCategoira);
+			SubCategoria subCat = cat.pesquisarSubCategoria(nomeSubCategoria);
 
 			if (subCat != null) {
 				desp = new Despesa(valor, subCat, this);
@@ -118,5 +118,11 @@ public class Republica {
 		// tratar na main
 	}
 	
-	
+	public double getValorDespesas() {
+		double valorTotalDespesas=0;
+		for(int i=0;i<despesas.size();i++) {
+			valorTotalDespesas+=despesas.get(i).getValor();
+		}
+		return valorTotalDespesas;
+	}
 }

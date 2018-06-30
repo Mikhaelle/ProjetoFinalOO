@@ -8,7 +8,8 @@ import javax.swing.JOptionPane;
 
 public class Categoria {
 	private String descricaoCategoria;
-
+	private Double valorCategoria;
+	
 	public Categoria(String desc) {
 		descricaoCategoria = desc;
 
@@ -21,6 +22,17 @@ public class Categoria {
 
 	List<SubCategoria> subs = new LinkedList<SubCategoria>(); // Lista de subcategorias
 
+	public double getTotalCategoria() {
+		double total=0;
+		for (int i=0;i<subs.size();i++) {
+			total=total+subs.get(i).getTotalSub();
+		}
+		return total;
+	}
+	public List<SubCategoria> getSubs(){
+		return subs;
+	}
+	
 	//Metodo para cadastro de subcategorias, retorna verdadeiro ou falso ----- EXISTE EXCEÇÃO FALSO
 	public boolean cadastrarSubcategoria(String nomeSubcategoria) {
 
