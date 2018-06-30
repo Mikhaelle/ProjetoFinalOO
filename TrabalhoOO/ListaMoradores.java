@@ -1,6 +1,9 @@
+package Morador;
+	
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
+import java.awt.List;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -26,7 +29,6 @@ import java.util.logging.Logger;
 		public static void main(String [] args) throws IOException {
 			
 			File fileName = new File("Moradores.txt");
-			String line;
 			
 			ListaMoradores obj = new ListaMoradores();
 			
@@ -61,10 +63,10 @@ import java.util.logging.Logger;
 		            FileWriter fileWriter = new FileWriter(fileName, false);
 		            PrintWriter printWriter = new PrintWriter(fileWriter);
 		            
-		            //Utilizamos o mÈtodo print() para escrever na
-		            // mesma linha e um ponto e vÌrgula no final.
-		            //O println forÁar· a troca de linha
-		            // para o prÛximo user.
+		            //Utilizo o m√©todo print() para escrever na
+		            // mesma linha e um ponto e v√≠rgula no final.
+		            //O println for√ßar√° a troca de linha
+		            // para o pr√≥ximo Morador.
 		            
 		            int sz = obj.cadastro.size();
 		            
@@ -78,115 +80,55 @@ import java.util.logging.Logger;
 		        } catch (IOException e) {
 		            e.printStackTrace();
 		        }
+				
+				try {
+		            FileReader fileReader = new FileReader(fileName);
+		            BufferedReader bufferedReader = new BufferedReader(fileReader);
+		            String linha = "";
 
-				
-				
-	/*		}try {
-				
-				FileWriter fw = new FileWriter(fileName);
-				Writer output = new BufferedWriter(fw);
-				int sz = obj.cadastro.size();
-				
-				for(int i= 0; i<sz; i++) {
-					
-					output.write(obj.cadastro.get(i).getNome() + "," + obj.cadastro.get(i).getEmail() + ","+ obj.cadastro.get(i).getRendimento().toString()+ "\n");
-				}
-				output.close();
-				
-			}catch(Exception e) {
-					JOptionPane.showMessageDialog(null, "N„o posso criar o Arquivo");
-				}
-			
-		try {
-				BufferedReader input = new BufferedReader(new FileReader(fileName));
-				if(!input.ready()) {
-					throw new IOException();
-				}
-				while ((line = input.readLine()) != null) {
-					obj.cadastro.add(line);
-				}
-			input.close();
-			}
-			catch (IOException e) {
-				System.out.println(e);
-			}
-			
-			// print os nomes da lista
-			
-			int sz = obj.cadastro.size();
-			for (int i = 0; i< sz; i++ ) {
-				System.out.println(obj.cadastro.get(i).toString());
-				
-			} */
-		
-		}
-			JOptionPane.showMessageDialog(null,"Dados cadastrados com sucesso!");
-		}}
-			
-	/*			try {
-		            // Conteudo
-		            String content = "Teste maria";
+		            //Lista que ir√° guardar o resultado, ou seja,
+		            // cada linha do arquivo que corresponde a um Morador
+		           
+		            ArrayList result = new ArrayList();
 
-		            // Cria arquivo
-		            File file = new File("dados.txt");
-
-		            // Se o arquivo nao existir, ele gera
-		            if (!file.exists()) {
-		                file.createNewFile();
-		            }
-
-		            // Prepara para escrever no arquivo
-		            FileWriter fw = new FileWriter("dados.txt");
-		            BufferedWriter bw = new BufferedWriter(fw);
-		            
-		            // Escreve e fecha arquivo
-		            bw.write(content);
-		            bw.close();
-		            
-		            // Le o arquivo
-		            FileReader ler = new FileReader("dados.txt");
-		            BufferedReader reader = new BufferedReader(ler);  
-		            String linha;
-		            while( (linha = reader.readLine()) != null ){
+		            while ((linha = bufferedReader.readLine()) != null) {
 		                System.out.println(linha);
+		                if (linha != null && !linha.isEmpty()) 
+		                {
+		                    result.add(linha);
+		                }
 		            }
+		            fileReader.close();
+		            bufferedReader.close();
 
-		            // Imprime confirmacao
-		            System.out.println("Feito =D");
+		            for (String s : result) {
+		                //Uso do m√©todo split da classe String
+		                // para separar as partes entre os ponto e v√≠rgulas.
+		                //Guardando o resultado em um array
+		                
+				 String[] user = s.split(";");
 
+		                //Criando um objeto Morador e setando em seus atributos
+		                //as posi√ß√µes correspondentes do array
+		              
+		                Morador m1 = new Morador(s, s, rendimento);
+		              
+		                m1.setNome(user[0]);
+		                m1.setEmail(user[1]);
+		                m1.setRendimento(Integer.valueOf(user[2]));
+
+		                //exibe o conte√∫do do objeto m1
+		                System.out.println(m1.toString());
+		            }
 		        } catch (IOException e) {
 		            e.printStackTrace();
 		        }
-				
-				
-			}
-			JOptionPane.showMessageDialog(null,"Dados cadastrados com sucesso!");
-			
-			//JOptionPane.showMessageDialog(null, this.nome +this.email+ this.rendimento);
-			
-			
-			
-		//	JOptionPane.showMessageDialog(null, "N˙mero de Cadastros", cadastro.size());
+
+		    }
 		
-			
-				
-		}}
-				
-				
-		/*		PrintWriter pw = new PrintWriter(fw);
-				pw.println("Nome: " + d.nome);
-				pw.println("Email: " + d.email);
-				pw.println("Rendimento: " +d.rendimento);
-				pw.close();
-				fw.close();
-				
-			} catch (IOException ex) {
-			
-				Logger.getLogger(Dados.class.getName()).log(Level.SEVERE,null,ex);	
-			}
-			//JOptionPane.showMessageDialog(null, this.nome +this.email+ this.rendimento);
-		}*/
-			
+			JOptionPane.showMessageDialog(null,"Dados cadastrados com sucesso!");	
+	}
+}
 		
 		
 
