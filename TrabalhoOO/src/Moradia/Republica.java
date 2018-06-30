@@ -25,6 +25,11 @@ public class Republica {
 	public String getNome() {
 		return nome;
 	}
+	
+	public void setNome(String novoNome) {
+		nome=novoNome;
+		JOptionPane.showMessageDialog(null, "Nome da república atualizado com sucesso! ");
+	}
 
 	List<Morador> moradores = new LinkedList<Morador>();
 
@@ -33,19 +38,21 @@ public class Republica {
 	}
 
 	public void cadastroMorador() {
-		int opcao = JOptionPane.showConfirmDialog(null, "Deseja cadastrar um morador ?");
+		int opcao=0;
 
-		while (opcao == JOptionPane.YES_OPTION) {
+		while (opcao == 0) {
 			String nomeMorador = JOptionPane.showInputDialog("Qual o nome do morador?");
 			String emailMorador = JOptionPane.showInputDialog("Qual o email do morador ?");
 			float rendMorador = Float.parseFloat(JOptionPane.showInputDialog("Qual o rendimento do morador"));
 
 			Morador morador = new Morador(nomeMorador, emailMorador, rendMorador);
 			moradores.add(morador);
-			opcao = JOptionPane.showConfirmDialog(null, "Deseja cadastrar um morador ?");
+			opcao = JOptionPane.showConfirmDialog(null, "Deseja cadastrar outro morador?", "Cadastro de moradores", 0);
 
 		}
-		JOptionPane.showMessageDialog(null, "Foram cadastrados " + moradores.size() + " moradores");
+		if(moradores.size()>0) {
+			JOptionPane.showMessageDialog(null, "Foram cadastrados " + moradores.size() + " moradores");
+		}
 	}
 
 	// retorna verdadeiro ou falso quando cria nova categoria ---- EXISTE EXCEÇÃO
