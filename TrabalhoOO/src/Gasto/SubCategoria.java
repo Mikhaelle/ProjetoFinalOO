@@ -1,4 +1,4 @@
-package CalculoPagamento;
+package Gasto;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,6 +20,7 @@ public class SubCategoria {
 	public String getDescricaoSubCategoria() {
 		return descricaoSubCategoria;
 	}
+	
 	public double getTotalSub() {
 		double totalSub=0;
 		for (int i=0;i<desps.size();i++) {
@@ -27,11 +28,18 @@ public class SubCategoria {
 		}
 		return totalSub;
 	}
+	
 	public LinkedList<Despesa> getDesps() {
 		return desps;
 	}
+	
 	public void adicionarDespesa(Despesa desp) {
 		desps.add(desp);
 	}
+	
+	public void retirarDespesa(Despesa desp) {
+		desps.remove(desp);
+	}
+	
 	
 }

@@ -6,9 +6,9 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import CalculoPagamento.Categoria;
-import CalculoPagamento.Despesa;
-import CalculoPagamento.SubCategoria;
+import Gasto.Categoria;
+import Gasto.Despesa;
+import Gasto.SubCategoria;
 
 public class Republica {
 
@@ -118,6 +118,25 @@ public class Republica {
 		// tratar na main
 	}
 	
+
+	public boolean retirarDespesa(String nomeSubCategoria, double valor) {
+		Despesa desp = null;
+		
+		for (Categoria cat : categorias) {
+
+			SubCategoria subCat = cat.pesquisarSubCategoria(nomeSubCategoria);
+			if (subCat != null) {
+				desp = new Despesa(valor, subCat, this);
+				subCat.retirarDespesa(desp); // retira despesa na subCategoria
+				return despesas.remove(desp); // retorna verdadeiro para despesa retirada
+			}
+		
+		}
+		return false;
+	}
+	
+	
+	
 	public double getValorDespesas() {
 		double valorTotalDespesas=0;
 		for(int i=0;i<despesas.size();i++) {
@@ -125,4 +144,7 @@ public class Republica {
 		}
 		return valorTotalDespesas;
 	}
+	
+	
+	
 }

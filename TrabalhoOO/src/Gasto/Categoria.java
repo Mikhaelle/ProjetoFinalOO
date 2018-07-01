@@ -1,4 +1,4 @@
-package CalculoPagamento;
+package Gasto;
 
 import java.util.Iterator;
 import java.util.LinkedList;
