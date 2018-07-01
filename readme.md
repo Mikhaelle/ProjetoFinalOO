@@ -1,7 +1,7 @@
 Trabalho final 2018.1 de Orientação a Objeto, que visa criar um sistema que controle e divida as despesas dos integrantes de uma república, dos seguintes alunos :
 Mikhaelle Bueno
 Filippe leal
-Marcus Vinícius
+Marcos Vinícius Rodrigues
 
 Comandos git:
 
