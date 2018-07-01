@@ -1,4 +1,3 @@
-
 public class Morador {
 	
 	String nome, email, rendimento;
