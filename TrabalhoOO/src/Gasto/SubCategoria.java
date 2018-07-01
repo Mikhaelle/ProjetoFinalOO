@@ -1,20 +1,16 @@
 package Gasto;
 
 import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.LinkedBlockingDeque;
 
 public class SubCategoria {
 	private String descricaoSubCategoria;
-	private Categoria categoria;
 	
 	
 	
 	LinkedList <Despesa> desps = new LinkedList<Despesa>();
 	
-	public SubCategoria(String dec, Categoria c) {
+	public SubCategoria(String dec) {
 		descricaoSubCategoria = dec;
-		categoria = c;
 	}
 
 	public String getDescricaoSubCategoria() {
@@ -24,7 +20,7 @@ public class SubCategoria {
 	public double getTotalSub() {
 		double totalSub=0;
 		for (int i=0;i<desps.size();i++) {
-			totalSub=totalSub+desps.get(i).valor;
+			totalSub+=totalSub+desps.get(i).valor;
 		}
 		return totalSub;
 	}

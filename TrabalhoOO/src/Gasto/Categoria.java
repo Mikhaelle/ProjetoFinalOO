@@ -1,14 +1,10 @@
 package Gasto;
 
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
-import javax.swing.JOptionPane;
 
 public class Categoria {
 	private String descricaoCategoria;
-	private Double valorCategoria;
 	
 	public Categoria(String desc) {
 		descricaoCategoria = desc;
@@ -36,7 +32,7 @@ public class Categoria {
 	//Metodo para cadastro de subcategorias, retorna verdadeiro ou falso ----- EXISTE EXCEÇÃO FALSO
 	public boolean cadastrarSubcategoria(String nomeSubcategoria) {
 
-			SubCategoria sub = new SubCategoria(nomeSubcategoria, this);
+			SubCategoria sub = new SubCategoria(nomeSubcategoria);
 			
 			return subs.add(sub);
 
