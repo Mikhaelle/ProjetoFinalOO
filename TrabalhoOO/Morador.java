@@ -1,3 +1,4 @@
+
 public class Morador {
 	
 	String nome, email, rendimento;
@@ -17,3 +18,4 @@ public class Morador {
 		
 	}
 }
+
