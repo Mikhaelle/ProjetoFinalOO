@@ -6,8 +6,6 @@ import java.io.FileWriter;
 
 public class Arquivo {
 
-	private BufferedReader br;
-
 	public void escreverMorador(Morador novo) {
 		
 		try {
@@ -46,7 +44,7 @@ public class Arquivo {
 			
 			int numLinhas=0;
 			
-			while((linha=br.readLine())!=null) {
+			while((linha = br.readLine())!=null) {
 				
 			numLinhas++;
 			}
@@ -54,10 +52,11 @@ public class Arquivo {
 			String contatos [] = new String[numLinhas];
 			br.close();
 			fr.close();
+			
 			br = new BufferedReader(fr = new FileReader(f));
 			
 			int i=0;
-			while((linha=br.readLine())!=null) {
+			while((linha = br.readLine())!=null) {
 				
 				contatos[i]= linha;
 				i++;
@@ -78,9 +77,11 @@ public class Arquivo {
 					System.out.println("Morador Eliminado!!");
 				}else {
 					if(primeiraLinha == true) {
-					bw.write(contatos[j]);
-					primeiraLinha=false;
-					}else {
+					
+						bw.write(contatos[j]);
+						primeiraLinha = false;
+					}
+					else {
 						bw.newLine();
 						bw.write(contatos[j]);
 					}
@@ -94,12 +95,15 @@ public class Arquivo {
 				if(numLinhas==1 && sinal==true) {
 					f.delete();
 				}
-		}else {
-			System.out.println("Esse nome não Existe!!");
 		}
-	}catch(Exception e){
-		System.out.println(e);
+				else {
+					System.out.println("Esse nome não Existe!!");
+		}
 	}
+		catch(Exception e)
+		{
+		System.out.println(e);
+	    }
 }
 	
 	public void buscar(String nomeB) {
@@ -112,10 +116,10 @@ public class Arquivo {
 				
 				boolean sinal=false;
 	
-				while((linha= br.readLine())!= null) {
+				while((linha = br.readLine())!= null) {
 					String contato [] = linha.split(",");
 					if(contato[0].equals(nomeB)) {
-					sinal= true;	
+					sinal = true;	
 					Morador m = new Morador(contato[0],contato[1],contato[2]);
 					
 					System.out.println("Nome Encontrado!");
@@ -137,3 +141,38 @@ public class Arquivo {
 			System.out.println(e);
 		}
 	}
+	
+	 
+
+	public void imprimir() {
+		try {
+			File f=new File("Moradores.txt");
+			if(f.exists()) {
+				FileReader fr = new FileReader(f);
+				BufferedReader br = new BufferedReader(fr);
+				String linha;
+				while((linha = br.readLine()) != null) {
+					
+					//(String nome, String email, String rendimento)
+					
+					String [] contato = linha.split(",");
+					
+					Morador m = new Morador(contato[0],contato[1],contato[2]);
+					
+					m.adicionarMorador();
+					System.out.println("***********************");
+						
+				}
+				fr.close();
+				br.close();
+			}
+			else 
+				{
+				
+				System.out.println("Arquivo não existe");
+				}
+				}catch(Exception e) {
+					System.out.println(e);
+				}
+	}
+}
