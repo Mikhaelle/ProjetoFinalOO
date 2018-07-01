@@ -1,12 +1,16 @@
+package principals;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import Moradia.Republica;
+import Moradia.Morador;
+
 
 public class Arquivo {
 
-	public void escreverMorador(Morador novo) {
+	public static void escreverMorador(Morador novo) {
 		
 		try {
 			
@@ -18,13 +22,13 @@ public class Arquivo {
 				fw= new FileWriter(f,true);
 				bw=new BufferedWriter(fw);
 				bw.newLine();
-				bw.write(novo.nome+","+novo.email+","+novo.rendimento);
+				bw.write(novo.getNome()+","+novo.getEmail()+","+novo.getRend());
 			}
 			else {
 				
 				fw= new FileWriter(f);
 				bw=new BufferedWriter(fw);
-				bw.write(novo.nome+","+novo.email+","+novo.rendimento);
+				bw.write(novo.getNome()+","+novo.getEmail()+","+novo.getRend());
 				
 			}
 			bw.close();
@@ -34,7 +38,7 @@ public class Arquivo {
 		}
 	}
 	
-	public void excluir(String nomeE) {
+	public static void excluirTxt(Morador mor) {
 		try {
 		File f= new File("Moradores.txt");
 		if(f.exists()) {
@@ -72,7 +76,7 @@ public class Arquivo {
 			for(int j=0; j<contatos.length; j++) {
 				
 				String l []= contatos[j].split(",");
-				if(l[0].equals(nomeE)) {
+				if(l[0].equals(mor.getNome())) {
 					sinal=true;
 					System.out.println("Morador Eliminado!!");
 				}else {
@@ -106,7 +110,7 @@ public class Arquivo {
 	    }
 }
 	
-	public void buscar(String nomeB) {
+	public void buscar(String nomeB,Republica rep) {
 		try {
 			File f= new File("Moradores.txt");
 			if(f.exists()) {
@@ -120,21 +124,17 @@ public class Arquivo {
 					String contato [] = linha.split(",");
 					if(contato[0].equals(nomeB)) {
 					sinal = true;	
-					Morador m = new Morador(contato[0],contato[1],contato[2]);
+					Morador mor = new Morador(contato[0],contato[1],Double.parseDouble(contato[2]));
 					
 					System.out.println("Nome Encontrado!");
-					m.adicionarMorador();
-					
-				}
-			}
-				if(sinal==false) {
-					System.out.println("Nome não Existe!!");
+					rep.cadastroMorador();
+					}
 				}
 				br.close();
 				fr.close();
-			}else {
-				System.out.println("Não existe arquivo para buscar");
 			}
+				
+			
 			
 			
 		}catch(Exception e){
@@ -144,35 +144,35 @@ public class Arquivo {
 	
 	 
 
-	public void imprimir() {
-		try {
-			File f=new File("Moradores.txt");
-			if(f.exists()) {
-				FileReader fr = new FileReader(f);
-				BufferedReader br = new BufferedReader(fr);
-				String linha;
-				while((linha = br.readLine()) != null) {
-					
-					//(String nome, String email, String rendimento)
-					
-					String [] contato = linha.split(",");
-					
-					Morador m = new Morador(contato[0],contato[1],contato[2]);
-					
-					m.adicionarMorador();
-					System.out.println("***********************");
-						
-				}
-				fr.close();
-				br.close();
-			}
-			else 
-				{
-				
-				System.out.println("Arquivo não existe");
-				}
-				}catch(Exception e) {
-					System.out.println(e);
-				}
-	}
+////	public void imprimir() {
+//		try {
+//			File f=new File("Moradores.txt");
+//			if(f.exists()) {
+//				FileReader fr = new FileReader(f);
+//				BufferedReader br = new BufferedReader(fr);
+//				String linha;
+//				while((linha = br.readLine()) != null) {
+//					
+//					//(String nome, String email, String rendimento)
+//					
+//					String [] contato = linha.split(",");
+//					
+//					Morador m = new Morador(contato[0],contato[1],contato[2]);
+//					
+//					m.adicionarMorador();
+//					System.out.println("***********************");
+//						
+//				}
+//				fr.close();
+//				br.close();
+//			}
+//			else 
+//				{
+//				
+//				System.out.println("Arquivo não existe");
+//				}
+//				}catch(Exception e) {
+//					System.out.println(e);
+//				}
+//	}
 }

@@ -6,7 +6,7 @@ public class Morador {
 	private double rendimento;
 	private double parcela=0;
 
-	public Morador(String n, String e, float r) {
+	public Morador(String n, String e, double r) {
 		nome = n;
 		email = e;
 		rendimento = r;

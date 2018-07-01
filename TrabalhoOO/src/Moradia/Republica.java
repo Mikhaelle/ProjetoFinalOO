@@ -10,6 +10,7 @@ import Execao.CategoriaNaoInformadaException;
 import Gasto.Categoria;
 import Gasto.Despesa;
 import Gasto.SubCategoria;
+import principals.Arquivo;
 
 public class Republica {
 
@@ -48,6 +49,7 @@ public class Republica {
 
 			Morador morador = new Morador(nomeMorador, emailMorador, rendMorador);
 			moradores.add(morador);
+			Arquivo.escreverMorador(morador);
 			opcao = JOptionPane.showConfirmDialog(null, "Deseja cadastrar outro morador?", "Cadastro de moradores", 0);
 
 		}
