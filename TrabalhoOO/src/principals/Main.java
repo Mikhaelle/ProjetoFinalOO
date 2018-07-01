@@ -28,7 +28,7 @@ public class Main {
 
 	private static LinkedList<Republica> criarRepublica(LinkedList<Republica> rep) {
 		String nomeRep = JOptionPane.showInputDialog(null, "Por favor, insira o nome da nova república",
-				"Nova república", 1);
+				"Nova república", 1);		
 		Republica newRep = new Republica(nomeRep);
 		rep.add(newRep);
 		return rep;
@@ -85,18 +85,18 @@ public class Main {
 			}
 		} else {
 			List<Morador> moradores = rep.get(escolhaRep).getMoradores();
-			String listaNomes = "Há" + moradores.size() + "moradores estão cadastrados na república "
+			String listaNomes = "Há " + moradores.size() + " moradores estão cadastrados na república "
 					+ rep.get(escolhaRep).getNome() + "\n";
 			String[] optionsMoradores = new String[moradores.size() + 1];
 			for (int i = 0; i < moradores.size(); i++) {
-				listaNomes = listaNomes + moradores.get(i).getNome() + "\n";
+				listaNomes = listaNomes +"-"+ moradores.get(i).getNome() + "\n";
 				optionsMoradores[i] = moradores.get(i).getNome();
 			}
 			optionsMoradores[moradores.size()] = "cancelar";
 			int escolhaMorador = JOptionPane.showOptionDialog(null, listaNomes, "Editar Moradores", 0, 1, null,
 					optionsMoradores, null);
 			String detalhesMorador = "Morador da república " + rep.get(escolhaRep).getNome() + "\nNome:";
-			if (escolhaMorador < moradores.size()) {
+			if (escolhaMorador < moradores.size()&&escolhaMorador>=0) {
 				detalhesMorador = detalhesMorador + moradores.get(escolhaMorador).getNome() + "\nEmail:"
 						+ moradores.get(escolhaMorador).getEmail() + "\nRendimento:"
 						+ moradores.get(escolhaMorador).getRend();
@@ -134,33 +134,14 @@ public class Main {
 			listaCat=listaCat+"     =>    "+rep.get(escolhaRep).categorias.get(i).getTotalCategoria();
 			opcoesCat[i]=rep.get(escolhaRep).categorias.get(i).getDescricaoCategoria();	
 		}
-		opcoesCat[rep.get(escolhaRep).categorias.size()]="Criar nova Categoria";
+		opcoesCat[rep.get(escolhaRep).categorias.size()]="Criar nova Despesa";
 		opcoesCat[rep.get(escolhaRep).categorias.size()+1]="Voltar";
 		
 		int escolhaCat=JOptionPane.showOptionDialog(null, mensagem+listaCat, "Editar Despesas", 0, 1, null, opcoesCat, null);
 		
 		return escolhaCat;
 	}
-	private static int editarDespesas(LinkedList<Republica> rep, int escolhaRep) {
-		String mensagem = "Há um total de R$" + rep.get(escolhaRep).getValorDespesas()
-				+ " em despesas.\n As despesas estão divididas em " + rep.get(escolhaRep).categorias.size()
-				+ " categorias:\n\nSão essas:";
-		String listaCat = "";
-		String[] opcoesCat = new String[rep.get(escolhaRep).categorias.size() + 2];
-		for (int i = 0; i < rep.get(escolhaRep).categorias.size(); i++) {
-			listaCat = listaCat + "\n" + rep.get(escolhaRep).categorias.get(i).getDescricaoCategoria();
-			listaCat = listaCat + "     =>    " + rep.get(escolhaRep).categorias.get(i).getTotalCategoria();
-			opcoesCat[i] = rep.get(escolhaRep).categorias.get(i).getDescricaoCategoria();
-
-		}
-		opcoesCat[rep.get(escolhaRep).categorias.size()] = "Criar nova Categoria";
-		opcoesCat[rep.get(escolhaRep).categorias.size() + 1] = "Voltar";
-
-		int escolhaCat = JOptionPane.showOptionDialog(null, mensagem + listaCat, "Editar Despesas", 0, 1, null,
-				opcoesCat, null);
-
-		return escolhaCat;
-	}
+	
 	
 	private static void criarDespesa(Republica rep) {
 		String cat=JOptionPane.showInputDialog("Qual a Categoria da despesa?");
@@ -174,10 +155,26 @@ public class Main {
 			rep.pesquisarCategoria(cat).cadastrarSubcategoria(sub);
 		}
 		double valor=Double.parseDouble(JOptionPane.showInputDialog("Qual o valor da despesa?"));
-		Despesa desp=new Despesa(valor,rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub),rep);
+		String desc=JOptionPane.showInputDialog("Insira uma descrição ou data para a despesa");
+		Despesa desp=new Despesa(valor,desc,rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub),rep);
 		rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub).adicionarDespesa(desp);
 	}
 
+	private static void editarSub(SubCategoria sub) {
+		String listDesp="A SubCategoria "+sub.getDescricaoSubCategoria()+" corresponde a R$"+sub.getTotalSub()+" em despesas.\n As despesas dessa Subcategoria são:\n";
+		String[] opcoesDesp=new String[sub.getDesps().size()+1];
+		for(int i=0;i<sub.getDesps().size();i++) {
+			listDesp+="\n"+sub.getDesps().get(i).getDesc()+"   =>   "+sub.getDesps().get(i).getValor();
+			opcoesDesp[i]=sub.getDesps().get(i).getDesc();
+		}
+		listDesp+="\n\n Deseja apagar alguma despesa, ou voltar?";
+		opcoesDesp[sub.getDesps().size()]="Voltar";
+		int apagarDesp=JOptionPane.showOptionDialog(null, listDesp, "Apagar Despesa", 0, 0, null, opcoesDesp, null);
+		if (apagarDesp>=0&&apagarDesp<sub.getDesps().size()) {
+			sub.retirarDespesa(sub.getDesps().get(apagarDesp));
+		}
+		
+	}
 	
 	public static void main(String[] args) {
 		// core
@@ -207,44 +204,39 @@ public class Main {
 						rep = editarMoradores(rep, escolhaRep);
 					}
 					
-					if (escolha == 2) {
-						int escolhaCat = 0;
-						while (escolhaCat >= 0 && escolhaCat <= rep.get(escolhaRep).categorias.size()) {
-							escolhaCat = editarDespesas(rep, escolhaRep);
-
-							if (escolhaCat < rep.get(escolhaRep).categorias.size() && escolhaCat != -1) {
-								Categoria cat = rep.get(escolhaRep).categorias.get(escolhaCat);
-								double parcelaCat = 100 * rep.get(escolhaRep).getValorDespesas()
-										/ cat.getTotalCategoria();
-								String mensagem = "A categoria " + cat.getDescricaoCategoria() + " é responsável por "
-										+ parcelaCat + "% das despesas da república " + rep.get(escolhaRep).getNome();
-								String listaSub = "";
-								for (int i = 0; i < cat.getSubs().size(); i++) {
-									SubCategoria subCat = cat.getSubs().get(i);
-									listaSub += "\n" + subCat.getDescricaoSubCategoria() + "     =>    "
-											+ subCat.getTotalSub() + "\n 	Despesas:";
-									for (int i2 = 0; i2 < subCat.getDesps().size(); i++) {
-										Despesa desp = subCat.getDesps().get(i2);
-										listaSub += "/n		" + desp.getValor();
-									}
-								}
-								String[] opcaoCat = new String[1];
-								opcaoCat[0] = "O O O";
-								JOptionPane.showOptionDialog(null, listaSub, "Editar Categorias", 0, 1, null, opcaoCat,
-										null);
-
+					if(escolha==2) {
+						int escolhaCat=0;
+						while(escolhaCat>=0&&escolhaCat<=rep.get(escolhaRep).categorias.size()) {
+							escolhaCat=editarDespesaTotal(rep,escolhaRep);			
+							if(escolhaCat==rep.get(escolhaRep).categorias.size()) {
+								criarDespesa(rep.get(escolhaRep));
 							}
-							if (escolhaCat == rep.get(escolhaRep).categorias.size()) {
-								rep.get(escolhaRep).categorias.add(rep.get(escolhaRep).novaCategoria(
-										JOptionPane.showInputDialog("Digite o nome da nova categoria:")));
+							if(escolhaCat>=0&&escolhaCat<rep.get(escolhaRep).categorias.size()){
+								LinkedList<SubCategoria> sub=rep.get(escolhaRep).categorias.get(escolhaCat).getSubs();
+								String listSubs="";
+								String[] opcaoSub= new String[sub.size()+1]; 
+								for(int i=0; i<sub.size();i++) {
+									listSubs+="\n"+sub.get(i).getDescricaoSubCategoria()+"   =>   "+sub.get(i).getTotalSub();
+									opcaoSub[i]=sub.get(i).getDescricaoSubCategoria();
+									
+								}
+								opcaoSub[sub.size()]="Voltar";
+								String mensagem="A categoria "+rep.get(escolhaRep).categorias.get(escolhaCat).getDescricaoCategoria()+
+										" corresponde a R$"+rep.get(escolhaRep).categorias.get(escolhaCat).getTotalCategoria()+
+										" das despesas da república.\n"+rep.get(escolhaRep).categorias.get(escolhaCat).getDescricaoCategoria()+
+										" possui as seguintes subCategorias:\n"+listSubs;
+								int escolhaSub=JOptionPane.showOptionDialog(null, mensagem, "Editar Categorias", 0, 1, null, opcaoSub, null);
+								if (escolhaSub>=0&&escolhaSub<sub.size()) {
+									editarSub(sub.get(escolhaSub));
+								}
 							}
 						
 						//editarSubs(rep,escolhaRep,escolhaCat);
 					
 						}
 					}
-					if (escolha == 3) {
-						republicaEscolhida = false;
+					if(escolha==3) {
+						republicaEscolhida=false;
 					}
 				}
 			}
@@ -254,6 +246,5 @@ public class Main {
 
 			}
 
-}
-
+	}
 
