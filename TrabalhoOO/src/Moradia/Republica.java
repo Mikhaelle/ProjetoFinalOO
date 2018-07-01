@@ -1,11 +1,11 @@
 package Moradia;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import Calculo.RegraIgualitaria;
 import Gasto.Categoria;
 import Gasto.Despesa;
 import Gasto.SubCategoria;
@@ -143,6 +143,10 @@ public class Republica {
 			valorTotalDespesas+=categorias.get(i).getTotalCategoria();
 		}
 		return valorTotalDespesas;
+	}
+	public void Divisao() {
+		RegraIgualitaria regra=new RegraIgualitaria(this);
+		regra.aplicarRegra(this);
 	}
 	
 	

@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import Calculo.RegraIgualitaria;
+import Calculo.RegraProporcional;
 import Gasto.Categoria;
 import Gasto.Despesa;
 import Gasto.SubCategoria;
@@ -87,12 +89,17 @@ public class Main {
 			List<Morador> moradores = rep.get(escolhaRep).getMoradores();
 			String listaNomes = "Há " + moradores.size() + " moradores estão cadastrados na república "
 					+ rep.get(escolhaRep).getNome() + "\n";
-			String[] optionsMoradores = new String[moradores.size() + 1];
+			String[] optionsMoradores = new String[moradores.size() + 2];
+//			if(rep.get(escolhaRep).categorias.size()>0) {
+//				RegraIgualitaria novaregra=new RegraIgualitaria(rep.get(escolhaRep));
+//				novaregra.aplicarRegra(rep.get(escolhaRep));
+//			}
 			for (int i = 0; i < moradores.size(); i++) {
-				listaNomes = listaNomes +"-"+ moradores.get(i).getNome() + "\n";
+				listaNomes = listaNomes +"-"+ moradores.get(i).getNome() +"   =>R$"+moradores.get(i).getParcela() +"\n";
 				optionsMoradores[i] = moradores.get(i).getNome();
 			}
-			optionsMoradores[moradores.size()] = "cancelar";
+			optionsMoradores[moradores.size()] = "Escolher Regra de divisão";
+			optionsMoradores[moradores.size()+1] = "cancelar";
 			int escolhaMorador = JOptionPane.showOptionDialog(null, listaNomes, "Editar Moradores", 0, 1, null,
 					optionsMoradores, null);
 			String detalhesMorador = "Morador da república " + rep.get(escolhaRep).getNome() + "\nNome:";
@@ -118,6 +125,21 @@ public class Main {
 				if (escolhaEditarMorador == 2) {
 					moradores.get(escolhaMorador).setRend(
 							Double.parseDouble(JOptionPane.showInputDialog("Digite o novo Rendimento para o Morador")));
+				}
+			}
+			if(escolhaMorador==moradores.size()) {
+				String Mensagem="Qual dos métodos de divisão abaixo deseja aplicar na república "+ rep.get(escolhaRep).getNome()+"?";
+				String[] opcoesRegra=new String[2];
+				opcoesRegra[0]="Regra Igualitária";
+				opcoesRegra[1]="Taxação de grandes fortunas";
+				int escolhaRegra=JOptionPane.showOptionDialog(null, Mensagem, "Escolha do método de divisão", 0, 1, null, opcoesRegra, null);
+				if(escolhaRegra==0) {
+					RegraIgualitaria novaregra=new RegraIgualitaria(rep.get(escolhaRep));
+					novaregra.aplicarRegra(rep.get(escolhaRep));
+				}
+				if(escolhaRegra==1) {
+					RegraProporcional novaregra=new RegraProporcional(rep.get(escolhaRep));
+					novaregra.aplicarRegra(rep.get(escolhaRep));
 				}
 			}
 		}

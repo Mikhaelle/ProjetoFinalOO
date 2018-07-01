@@ -4,6 +4,7 @@ public class Morador {
 	private String nome;
 	private String email;
 	private double rendimento;
+	private double parcela=0;
 
 	public Morador(String n, String e, float r) {
 		nome = n;
@@ -27,5 +28,11 @@ public class Morador {
 	}
 	public void setEmail(String novoEmail) {
 		email=novoEmail;
+	}
+	public double getParcela() {
+		return parcela;
+	}
+	public void setParcela(double newParcela) {
+		parcela=newParcela;
 	}
 }
