@@ -20,7 +20,7 @@ public class Categoria {
 		return descricaoCategoria;
 	}
 
-	List<SubCategoria> subs = new LinkedList<SubCategoria>(); // Lista de subcategorias
+	LinkedList<SubCategoria> subs = new LinkedList<SubCategoria>(); // Lista de subcategorias
 
 	public double getTotalCategoria() {
 		double total=0;
@@ -29,7 +29,7 @@ public class Categoria {
 		}
 		return total;
 	}
-	public List<SubCategoria> getSubs(){
+	public LinkedList<SubCategoria> getSubs(){
 		return subs;
 	}
 	

@@ -35,18 +35,24 @@ public class Main {
 	}
 
 	private static LinkedList<Republica> apagarRepublica(LinkedList<Republica> rep) {
-		String titleApagar = "Apagar República";
-		String messageApagar = "Clique na república que deseja apagar";
-		String[] optApagar = new String[rep.size() + 1];
-		for (int i = 0; i < rep.size(); i++) {
-			optApagar[i] = rep.get(i).getNome();
+		if(rep.size()==0) {
+			JOptionPane.showMessageDialog(null, "não há nenhuma república para apagar!");
 		}
-		optApagar[rep.size()] = "Cancelar";
-		int escolha = JOptionPane.showOptionDialog(null, messageApagar, titleApagar, 0, 1, null, optApagar, null);
-		if (escolha >= 0 && escolha <= rep.size()) {
-			rep.remove(escolha);
+		else {
+			String titleApagar = "Apagar República";
+			String messageApagar = "Clique na república que deseja apagar";
+			String[] optApagar = new String[rep.size() + 1];
+			for (int i = 0; i < rep.size(); i++) {
+				optApagar[i] = rep.get(i).getNome();
+			}
+			optApagar[rep.size()] = "Cancelar";
+			int escolha = JOptionPane.showOptionDialog(null, messageApagar, titleApagar, 0, 1, null, optApagar, null);
+			if (escolha >= 0 && escolha <= rep.size()) {
+				rep.remove(escolha);
+			}
 		}
 		return rep;
+		
 	}
 
 	private static int editarRepublica(LinkedList<Republica> rep, int escolhaRep) {
@@ -118,7 +124,23 @@ public class Main {
 
 		return rep;
 	}
-
+	
+	private static int editarDespesaTotal(LinkedList<Republica> rep, int escolhaRep) {
+		String mensagem="Há um total de R$"+rep.get(escolhaRep).getValorDespesas()+" em despesas.\n As despesas estão divididas em "+rep.get(escolhaRep).categorias.size()+" categorias:\n\nSão essas:";
+		String listaCat="";
+		String[] opcoesCat=new String[rep.get(escolhaRep).categorias.size()+2];
+		for(int i=0;i<rep.get(escolhaRep).categorias.size();i++) {
+			listaCat=listaCat+"\n"+rep.get(escolhaRep).categorias.get(i).getDescricaoCategoria();
+			listaCat=listaCat+"     =>    "+rep.get(escolhaRep).categorias.get(i).getTotalCategoria();
+			opcoesCat[i]=rep.get(escolhaRep).categorias.get(i).getDescricaoCategoria();	
+		}
+		opcoesCat[rep.get(escolhaRep).categorias.size()]="Criar nova Categoria";
+		opcoesCat[rep.get(escolhaRep).categorias.size()+1]="Voltar";
+		
+		int escolhaCat=JOptionPane.showOptionDialog(null, mensagem+listaCat, "Editar Despesas", 0, 1, null, opcoesCat, null);
+		
+		return escolhaCat;
+	}
 	private static int editarDespesas(LinkedList<Republica> rep, int escolhaRep) {
 		String mensagem = "Há um total de R$" + rep.get(escolhaRep).getValorDespesas()
 				+ " em despesas.\n As despesas estão divididas em " + rep.get(escolhaRep).categorias.size()
@@ -129,6 +151,7 @@ public class Main {
 			listaCat = listaCat + "\n" + rep.get(escolhaRep).categorias.get(i).getDescricaoCategoria();
 			listaCat = listaCat + "     =>    " + rep.get(escolhaRep).categorias.get(i).getTotalCategoria();
 			opcoesCat[i] = rep.get(escolhaRep).categorias.get(i).getDescricaoCategoria();
+
 		}
 		opcoesCat[rep.get(escolhaRep).categorias.size()] = "Criar nova Categoria";
 		opcoesCat[rep.get(escolhaRep).categorias.size() + 1] = "Voltar";
@@ -138,7 +161,24 @@ public class Main {
 
 		return escolhaCat;
 	}
+	
+	private static void criarDespesa(Republica rep) {
+		String cat=JOptionPane.showInputDialog("Qual a Categoria da despesa?");
+		Categoria catExiste=rep.pesquisarCategoria(cat);
+		if (catExiste==null) {
+			rep.categorias.add(rep.novaCategoria(cat));
+		}
+		String sub=JOptionPane.showInputDialog("Qual a Subcategoria da despesa?");
+		SubCategoria subExiste=rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub);
+		if (subExiste==null) {
+			rep.pesquisarCategoria(cat).cadastrarSubcategoria(sub);
+		}
+		double valor=Double.parseDouble(JOptionPane.showInputDialog("Qual o valor da despesa?"));
+		Despesa desp=new Despesa(valor,rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub),rep);
+		rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub).adicionarDespesa(desp);
+	}
 
+	
 	public static void main(String[] args) {
 		// core
 		int escolhaRep = 0;
@@ -166,6 +206,7 @@ public class Main {
 					if (escolha == 1) {
 						rep = editarMoradores(rep, escolhaRep);
 					}
+					
 					if (escolha == 2) {
 						int escolhaCat = 0;
 						while (escolhaCat >= 0 && escolhaCat <= rep.get(escolhaRep).categorias.size()) {
@@ -197,17 +238,22 @@ public class Main {
 								rep.get(escolhaRep).categorias.add(rep.get(escolhaRep).novaCategoria(
 										JOptionPane.showInputDialog("Digite o nome da nova categoria:")));
 							}
+						
+						//editarSubs(rep,escolhaRep,escolhaCat);
+					
 						}
 					}
 					if (escolha == 3) {
 						republicaEscolhida = false;
 					}
-
 				}
+			}
+					
+				
+		}
 
 			}
 
-		}
-	}
-
 }
+
+
