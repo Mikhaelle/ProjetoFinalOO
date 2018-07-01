@@ -35,18 +35,24 @@ public class Main {
 	}
 
 	private static LinkedList<Republica> apagarRepublica(LinkedList<Republica> rep) {
-		String titleApagar = "Apagar República";
-		String messageApagar = "Clique na república que deseja apagar";
-		String[] optApagar = new String[rep.size() + 1];
-		for (int i = 0; i < rep.size(); i++) {
-			optApagar[i] = rep.get(i).getNome();
+		if(rep.size()==0) {
+			JOptionPane.showMessageDialog(null, "não há nenhuma república para apagar!");
 		}
-		optApagar[rep.size()] = "Cancelar";
-		int escolha = JOptionPane.showOptionDialog(null, messageApagar, titleApagar, 0, 1, null, optApagar, null);
-		if (escolha >= 0 && escolha <= rep.size()) {
-			rep.remove(escolha);
+		else {
+			String titleApagar = "Apagar República";
+			String messageApagar = "Clique na república que deseja apagar";
+			String[] optApagar = new String[rep.size() + 1];
+			for (int i = 0; i < rep.size(); i++) {
+				optApagar[i] = rep.get(i).getNome();
+			}
+			optApagar[rep.size()] = "Cancelar";
+			int escolha = JOptionPane.showOptionDialog(null, messageApagar, titleApagar, 0, 1, null, optApagar, null);
+			if (escolha >= 0 && escolha <= rep.size()) {
+				rep.remove(escolha);
+			}
 		}
 		return rep;
+		
 	}
 	
 	private static int editarRepublica(LinkedList<Republica> rep, int escolhaRep) {
@@ -109,7 +115,7 @@ public class Main {
 		return rep;
 	}
 	
-	private static int editarDespesas(LinkedList<Republica> rep, int escolhaRep) {
+	private static int editarDespesaTotal(LinkedList<Republica> rep, int escolhaRep) {
 		String mensagem="Há um total de R$"+rep.get(escolhaRep).getValorDespesas()+" em despesas.\n As despesas estão divididas em "+rep.get(escolhaRep).categorias.size()+" categorias:\n\nSão essas:";
 		String listaCat="";
 		String[] opcoesCat=new String[rep.get(escolhaRep).categorias.size()+2];
@@ -124,6 +130,22 @@ public class Main {
 		int escolhaCat=JOptionPane.showOptionDialog(null, mensagem+listaCat, "Editar Despesas", 0, 1, null, opcoesCat, null);
 		
 		return escolhaCat;
+	}
+	
+	private static void criarDespesa(Republica rep) {
+		String cat=JOptionPane.showInputDialog("Qual a Categoria da despesa?");
+		Categoria catExiste=rep.pesquisarCategoria(cat);
+		if (catExiste==null) {
+			rep.categorias.add(rep.novaCategoria(cat));
+		}
+		String sub=JOptionPane.showInputDialog("Qual a Subcategoria da despesa?");
+		SubCategoria subExiste=rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub);
+		if (subExiste==null) {
+			rep.pesquisarCategoria(cat).cadastrarSubcategoria(sub);
+		}
+		double valor=Double.parseDouble(JOptionPane.showInputDialog("Qual o valor da despesa?"));
+		Despesa desp=new Despesa(valor,rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub),rep);
+		rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub).adicionarDespesa(desp);
 	}
 	
 	public static void main(String[] args) {
@@ -156,42 +178,40 @@ public class Main {
 					if(escolha==2) {
 						int escolhaCat=0;
 						while(escolhaCat>=0&&escolhaCat<=rep.get(escolhaRep).categorias.size()) {
-							escolhaCat=editarDespesas(rep,escolhaRep);
-							
-							if(escolhaCat<rep.get(escolhaRep).categorias.size()&&escolhaCat!=-1) {
-								Categoria cat=rep.get(escolhaRep).categorias.get(escolhaCat);
-								double parcelaCat=100*rep.get(escolhaRep).getValorDespesas()/cat.getTotalCategoria();
-								String mensagem="A categoria "+cat.getDescricaoCategoria()+" é responsável por "+parcelaCat+"% das despesas da república "+rep.get(escolhaRep).getNome();
-								String listaSub="";
-								for(int i=0;i<cat.getSubs().size();i++) {
-									SubCategoria subCat=cat.getSubs().get(i);
-									listaSub+="\n"+subCat.getDescricaoSubCategoria()+"     =>    "+subCat.getTotalSub()+"\n 	Despesas:";
-									for(int i2=0;i2<subCat.getDesps().size();i++) {
-										Despesa desp=subCat.getDesps().get(i2);
-										listaSub+="/n		"+desp.getValor();
-									}
-								}
-								String[] opcaoCat=new String[1];
-								opcaoCat[0]="O O O";
-								JOptionPane.showOptionDialog(null, listaSub, "Editar Categorias", 0, 1, null, opcaoCat, null);
-								
-									
-							}
+							escolhaCat=editarDespesaTotal(rep,escolhaRep);			
 							if(escolhaCat==rep.get(escolhaRep).categorias.size()) {
-								rep.get(escolhaRep).categorias.add(rep.get(escolhaRep).novaCategoria(JOptionPane.showInputDialog("Digite o nome da nova categoria:")));
+								criarDespesa(rep.get(escolhaRep));
 							}
+							if(escolhaCat>=0&&escolhaCat<rep.get(escolhaRep).categorias.size()){
+								LinkedList<SubCategoria> sub=rep.get(escolhaRep).categorias.get(escolhaCat).getSubs();
+								String listSubs="";
+								String[] opcaoSub= new String[sub.size()+2]; 
+								for(int i=0; i<sub.size();i++) {
+									listSubs+="\n"+sub.get(i).getDescricaoSubCategoria()+"   =>   "+sub.get(i).getTotalSub();
+									opcaoSub[i]=sub.get(i).getDescricaoSubCategoria();
+									
+								}
+								opcaoSub[sub.size()]="Excluir despesa";
+								opcaoSub[sub.size()+1]="Voltar";
+								String mensagem="A categoria "+rep.get(escolhaRep).categorias.get(escolhaCat).getDescricaoCategoria()+" possui as seguintes subCategorias:\n"+listSubs;
+								int escolhaSub=JOptionPane.showOptionDialog(null, mensagem, "Editar SubCategorias", 0, 1, null, opcaoSub, null);
+							}
+						
+						//editarSubs(rep,escolhaRep,escolhaCat);
+					
 						}
 					}
 					if(escolha==3) {
 						republicaEscolhida=false;
 					}
-				
 				}
+			}
+					
+				
+		}
 
 			}
 
-		}
 	}
 
 	
-}
