@@ -54,6 +54,7 @@ public class Menu {
 			String nomeE = leerC.nextLine();
 			a.excluir(nomeE);
 			break;
+			
 		case 5:
 			break;
 		default:
