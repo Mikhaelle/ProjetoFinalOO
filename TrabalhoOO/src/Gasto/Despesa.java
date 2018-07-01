@@ -11,11 +11,13 @@ import Moradia.Republica;
 public class Despesa {
 
 	double valor;
+	String descricao;
 	SubCategoria sub;
 	Republica rep;
 
-	public Despesa(double v, SubCategoria a, Republica r) {
+	public Despesa(double v,String desc, SubCategoria a, Republica r) {
 		valor = v;
+		descricao=desc;
 		sub = a;
 		rep = r;
 
@@ -23,6 +25,10 @@ public class Despesa {
 
 	public double getValor() {
 		return valor;
+	}
+	
+	public String getDesc() {
+		return descricao;
 	}
 
 	public SubCategoria getSub() {

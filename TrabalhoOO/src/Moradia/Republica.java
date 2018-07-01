@@ -98,7 +98,7 @@ public class Republica {
 	// cadastra uma despesa, a pessoa coloca o nome da subcategoria e o valor
 	// é procurado em todas as categroias uma subcategoria com o nome, quando
 	// encontrada ela adiciona a despesa
-	public boolean cadastrarDespesa(String nomeSubCategoria, double valor) {
+	public boolean cadastrarDespesa(String nomeSubCategoria, double valor,String descricao) {
 		Despesa desp = null;
 
 		for (Categoria cat : categorias) {
@@ -106,7 +106,7 @@ public class Republica {
 			SubCategoria subCat = cat.pesquisarSubCategoria(nomeSubCategoria);
 
 			if (subCat != null) {
-				desp = new Despesa(valor, subCat, this);
+				desp = new Despesa(valor,descricao, subCat, this);
 				subCat.adicionarDespesa(desp); // adc despesa na subCategoria
 				return despesas.add(desp); // retorna verdadeiro para despesa cadastrada
 
@@ -119,14 +119,14 @@ public class Republica {
 	}
 	
 
-	public boolean retirarDespesa(String nomeSubCategoria, double valor) {
+	public boolean retirarDespesa(String nomeSubCategoria, double valor,String descricao) {
 		Despesa desp = null;
 		
 		for (Categoria cat : categorias) {
 
 			SubCategoria subCat = cat.pesquisarSubCategoria(nomeSubCategoria);
 			if (subCat != null) {
-				desp = new Despesa(valor, subCat, this);
+				desp = new Despesa(valor,descricao, subCat, this);
 				subCat.retirarDespesa(desp); // retira despesa na subCategoria
 				return despesas.remove(desp); // retorna verdadeiro para despesa retirada
 			}
@@ -139,8 +139,8 @@ public class Republica {
 	
 	public double getValorDespesas() {
 		double valorTotalDespesas=0;
-		for(int i=0;i<despesas.size();i++) {
-			valorTotalDespesas+=despesas.get(i).getValor();
+		for(int i=0;i<categorias.size();i++) {
+			valorTotalDespesas+=categorias.get(i).getTotalCategoria();
 		}
 		return valorTotalDespesas;
 	}
