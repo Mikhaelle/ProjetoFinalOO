@@ -10,7 +10,7 @@ public class Menu {
 		
 		int option = 0;
 		
-		while(option!=4){
+		while(option!=5){
 		System.out.println("Menu");
 		System.out.println("1 - Para inserir novo Morador");
 		System.out.println("2 - Para ler o arquivo");
@@ -67,3 +67,4 @@ public class Menu {
 	}
 
 }
+
