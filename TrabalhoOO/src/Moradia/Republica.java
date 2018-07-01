@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import Calculo.RegraIgualitaria;
+import Execao.CategoriaNaoInformadaException;
 import Gasto.Categoria;
 import Gasto.Despesa;
 import Gasto.SubCategoria;
@@ -25,9 +26,9 @@ public class Republica {
 	public String getNome() {
 		return nome;
 	}
-	
+
 	public void setNome(String novoNome) {
-		nome=novoNome;
+		nome = novoNome;
 		JOptionPane.showMessageDialog(null, "Nome da república atualizado com sucesso! ");
 	}
 
@@ -38,7 +39,7 @@ public class Republica {
 	}
 
 	public void cadastroMorador() {
-		int opcao=0;
+		int opcao = 0;
 
 		while (opcao == 0) {
 			String nomeMorador = JOptionPane.showInputDialog("Qual o nome do morador?");
@@ -50,31 +51,35 @@ public class Republica {
 			opcao = JOptionPane.showConfirmDialog(null, "Deseja cadastrar outro morador?", "Cadastro de moradores", 0);
 
 		}
-		if(moradores.size()>0) {
+		if (moradores.size() > 0) {
 			JOptionPane.showMessageDialog(null, "Foram cadastrados " + moradores.size() + " moradores");
 		}
 	}
 
 	// retorna verdadeiro ou falso quando cria nova categoria ---- EXISTE EXCEÇÃO
-	public Categoria novaCategoria(String nomeCategoria) {
+	public Categoria novaCategoria(String nomeCategoria) throws CategoriaNaoInformadaException {
 
+		if (nomeCategoria.equals("")) {
+			throw new CategoriaNaoInformadaException(nomeCategoria);
+		}
+		
 		Categoria cat = new Categoria(nomeCategoria);
-
+		categorias.add(cat);
 		return cat;
 	}
 
 	// retorna a categoria pesquisada
 	public Categoria pesquisarCategoria(String nomeCategoria) {
-		Categoria resposta = null;
+		//Categoria resposta = null;
 		for (Categoria cat : categorias) {
 
 			if (cat.getDescricaoCategoria().equalsIgnoreCase(nomeCategoria)) {
 
-				resposta = cat;
+				return cat;
 			}
 		}
 
-		return resposta;
+		return null;
 	}
 
 	// retirar categoria, retorna uma string
@@ -98,7 +103,7 @@ public class Republica {
 	// cadastra uma despesa, a pessoa coloca o nome da subcategoria e o valor
 	// é procurado em todas as categroias uma subcategoria com o nome, quando
 	// encontrada ela adiciona a despesa
-	public boolean cadastrarDespesa(String nomeSubCategoria, double valor,String descricao) {
+	public boolean cadastrarDespesa(String nomeSubCategoria, double valor, String descricao) {
 		Despesa desp = null;
 
 		for (Categoria cat : categorias) {
@@ -106,7 +111,7 @@ public class Republica {
 			SubCategoria subCat = cat.pesquisarSubCategoria(nomeSubCategoria);
 
 			if (subCat != null) {
-				desp = new Despesa(valor,descricao, subCat, this);
+				desp = new Despesa(valor, descricao, subCat, this);
 				subCat.adicionarDespesa(desp); // adc despesa na subCategoria
 				return despesas.add(desp); // retorna verdadeiro para despesa cadastrada
 
@@ -117,38 +122,34 @@ public class Republica {
 		return false; // despesa não cadastrada, porque o nome da subcategoria nao foi encontrado
 		// tratar na main
 	}
-	
 
-	public boolean retirarDespesa(String nomeSubCategoria, double valor,String descricao) {
+	public boolean retirarDespesa(String nomeSubCategoria, double valor, String descricao) {
 		Despesa desp = null;
-		
+
 		for (Categoria cat : categorias) {
 
 			SubCategoria subCat = cat.pesquisarSubCategoria(nomeSubCategoria);
 			if (subCat != null) {
-				desp = new Despesa(valor,descricao, subCat, this);
+				desp = new Despesa(valor, descricao, subCat, this);
 				subCat.retirarDespesa(desp); // retira despesa na subCategoria
 				return despesas.remove(desp); // retorna verdadeiro para despesa retirada
 			}
-		
+
 		}
 		return false;
 	}
-	
-	
-	
+
 	public double getValorDespesas() {
-		double valorTotalDespesas=0;
-		for(int i=0;i<categorias.size();i++) {
-			valorTotalDespesas+=categorias.get(i).getTotalCategoria();
+		double valorTotalDespesas = 0;
+		for (int i = 0; i < categorias.size(); i++) {
+			valorTotalDespesas += categorias.get(i).getTotalCategoria();
 		}
 		return valorTotalDespesas;
 	}
+
 	public void Divisao() {
-		RegraIgualitaria regra=new RegraIgualitaria(this);
+		RegraIgualitaria regra = new RegraIgualitaria(this);
 		regra.aplicarRegra(this);
 	}
-	
-	
-	
+
 }
