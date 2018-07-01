@@ -26,7 +26,6 @@ public class Arquivo {
 				
 				fw= new FileWriter(f);
 				bw=new BufferedWriter(fw);
-				bw.newLine();
 				bw.write(novo.nome+","+novo.email+","+novo.rendimento);
 				
 			}
@@ -59,10 +58,10 @@ public class Arquivo {
 				}
 			}
 				if(sinal==false) {
-					System.out.println("Nome n„o Existe!!");
+					System.out.println("Nome n√£o Existe!!");
 				}
 			}else {
-				System.out.println("N„o existe arquivo para buscar");
+				System.out.println("N√£o existe arquivo para buscar");
 			}
 			
 			
@@ -120,7 +119,7 @@ public class Arquivo {
 					}
 				}
 				if(sinal==false) {
-					System.out.println("Contato n„o Encontrado!");
+					System.out.println("Contato n√£o Encontrado!");
 				}
 				bw.close();
 				fw.close();
@@ -129,7 +128,7 @@ public class Arquivo {
 				}
 			}
 		}else {
-			System.out.println("Esse nome n„o Existe!!");
+			System.out.println("Esse nome n√£o Existe!!");
 		}
 	}catch(Exception e){
 		System.out.println(e);
@@ -158,7 +157,7 @@ public class Arquivo {
 			}else 
 				{
 				
-				System.out.println("Arquivo n„o existe");
+				System.out.println("Arquivo n√£o existe");
 				}
 				}catch(Exception e) {
 					System.out.println(e);
