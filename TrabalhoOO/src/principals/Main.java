@@ -23,6 +23,7 @@ public class Main {
 			optMenu[i] = rep.get(i).getNome();
 		}
 		int escolhaRep = JOptionPane.showOptionDialog(null,
+				
 				"Bem vindo ao Gerenciador Financeiro para repúblicas\n\n Crie, delete ou escolha uma república que deseja editar",
 				"Gerenciador Financeiro - Seletor de República", 0, 1, null, optMenu, null);
 		return escolhaRep;
@@ -131,7 +132,7 @@ public class Main {
 				String Mensagem="Qual dos métodos de divisão abaixo deseja aplicar na república "+ rep.get(escolhaRep).getNome()+"?";
 				String[] opcoesRegra=new String[2];
 				opcoesRegra[0]="Regra Igualitária";
-				opcoesRegra[1]="Taxação de grandes fortunas";
+				opcoesRegra[1]="Regra Proporcional";
 				int escolhaRegra=JOptionPane.showOptionDialog(null, Mensagem, "Escolha do método de divisão", 0, 1, null, opcoesRegra, null);
 				if(escolhaRegra==0) {
 					RegraIgualitaria novaregra=new RegraIgualitaria(rep.get(escolhaRep));

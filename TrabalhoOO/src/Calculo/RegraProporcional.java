@@ -15,7 +15,7 @@ public class RegraProporcional extends ValorPago {
 		}
 		for (int i2=0;i2<rep.getMoradores().size();i2++) {
 			parcela[i2]=rends[i2]/totalRends;
-			valorPorPessoa[i2]=parcela[i2]*totalRends;	
+			valorPorPessoa[i2]=parcela[i2]*valorTotal;	
 		}
 		
 		return valorPorPessoa;
