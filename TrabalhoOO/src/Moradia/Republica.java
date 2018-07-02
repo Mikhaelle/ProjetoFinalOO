@@ -39,9 +39,8 @@ public class Republica {
 		return moradores;
 	}
 
-	public void cadastroMorador() {
-		int opcao = 0;
-
+	public void cadastroMorador(Republica rep) {
+		int opcao=0;
 		while (opcao == 0) {
 			String nomeMorador = JOptionPane.showInputDialog("Qual o nome do morador?");
 			String emailMorador = JOptionPane.showInputDialog("Qual o email do morador ?");
@@ -49,7 +48,7 @@ public class Republica {
 
 			Morador morador = new Morador(nomeMorador, emailMorador, rendMorador);
 			moradores.add(morador);
-			Arquivo.escreverMorador(morador);
+			Arquivo.escreverMorador(rep,morador);
 			opcao = JOptionPane.showConfirmDialog(null, "Deseja cadastrar outro morador?", "Cadastro de moradores", 0);
 
 		}

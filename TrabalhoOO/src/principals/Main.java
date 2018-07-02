@@ -39,6 +39,7 @@ public class Main {
 				"Nova república", 1);
 		Republica newRep = new Republica(nomeRep);
 		rep.add(newRep);
+		Arquivo.loadMoradores(newRep);
 		return rep;
 	}
 
@@ -54,7 +55,7 @@ public class Main {
 			}
 			optApagar[rep.size()] = "Cancelar";
 			int escolha = JOptionPane.showOptionDialog(null, messageApagar, titleApagar, 0, 1, null, optApagar, null);
-			if (escolha >= 0 && escolha <= rep.size()) {
+			if (escolha >= 0 && escolha <= rep.size()) {	
 				rep.remove(escolha);
 			}
 		}
@@ -88,9 +89,8 @@ public class Main {
 					"Editar Moradores", 0);
 			if (yesNo == 0) {
 				// essa é a opção "sim"
-
 				// try {
-				rep.get(escolhaRep).cadastroMorador();
+				rep.get(escolhaRep).cadastroMorador(rep.get(escolhaRep));
 				// } catch (DadosPessoaisIncompletosException e) {
 				// e.printStackTrace();
 				// }
@@ -99,12 +99,8 @@ public class Main {
 			List<Morador> moradores = rep.get(escolhaRep).getMoradores();
 			String listaNomes = "Há " + moradores.size() + " moradores estão cadastrados na república "
 					+ rep.get(escolhaRep).getNome() + "\n";
+			String[] optionsMoradores = new String[moradores.size() + 4];
 
-			String[] optionsMoradores = new String[moradores.size() + 3];
-//			if(rep.get(escolhaRep).categorias.size()>0) {
-//				RegraIgualitaria novaregra=new RegraIgualitaria(rep.get(escolhaRep));
-//				novaregra.aplicarRegra(rep.get(escolhaRep));
-//			}
 
 			for (int i = 0; i < moradores.size(); i++) {
 				listaNomes = listaNomes + "-" + moradores.get(i).getNome() + "   =>R$" + moradores.get(i).getParcela()
@@ -112,10 +108,9 @@ public class Main {
 				optionsMoradores[i] = moradores.get(i).getNome();
 			}
 			optionsMoradores[moradores.size()] = "Escolher Regra de divisão";
-
 			optionsMoradores[moradores.size()+1] = "Excluir Morador";
-			optionsMoradores[moradores.size()+2] = "cancelar";
-
+			optionsMoradores[moradores.size()+2] = "Novo Morador";
+			optionsMoradores[moradores.size()+3] = "cancelar";
 			int escolhaMorador = JOptionPane.showOptionDialog(null, listaNomes, "Editar Moradores", 0, 1, null,
 					optionsMoradores, null);
 			String detalhesMorador = "Morador da república " + rep.get(escolhaRep).getNome() + "\nNome:";
@@ -161,8 +156,12 @@ public class Main {
 				}
 			}
 			if(escolhaMorador==moradores.size()+1) {
-				excluirMorador(rep.get(escolhaRep).getMoradores());
+				excluirMorador(rep.get(escolhaRep),rep.get(escolhaRep).getMoradores());
 			}
+			if(escolhaMorador==moradores.size()+2) {
+				rep.get(escolhaRep).cadastroMorador(rep.get(escolhaRep));
+			}
+
 		}
 		
 
@@ -233,15 +232,16 @@ public class Main {
 		}
 	}
 	
-	private static void excluirMorador(List<Morador> mor) {
+	private static void excluirMorador(Republica rep,List<Morador> mor) {
 		String mensagem="Escolha o morador a ser excluído";
 		String[] opcaoExcluir=new String[mor.size()];
 		for(int i=0;i<mor.size();i++) {
 			opcaoExcluir[i]=mor.get(i).getNome();
 		}
 		int escolhaExcluir=JOptionPane.showOptionDialog(null, mensagem, "Excluir Morador", 0, 0, null, opcaoExcluir, null);
+		Arquivo.excluirTxt(rep,mor.get(escolhaExcluir));
 		mor.remove(escolhaExcluir);
-		//Arquivo.apagarTxt(mor.get(escolhaExcluir));
+
 	}
 	
 			
