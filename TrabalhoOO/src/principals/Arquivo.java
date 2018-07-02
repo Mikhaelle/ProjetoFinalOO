@@ -264,7 +264,7 @@ public class Arquivo {
 				String [] contato = linha.split(",");
 					
 				Morador m = new Morador(contato[0],contato[1],Double.parseDouble(contato[2]));
-					
+				System.out.println("teste2");	
 				rep.getMoradores().add(m);
 				System.out.println("deu, mano");
 						

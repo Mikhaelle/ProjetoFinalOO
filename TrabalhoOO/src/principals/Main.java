@@ -39,6 +39,7 @@ public class Main {
 				"Nova república", 1);
 		Republica newRep = new Republica(nomeRep);
 		rep.add(newRep);
+		System.out.println("teste1");
 		Arquivo.loadMoradores(newRep);
 		Arquivo.loadDespesas(newRep);
 		return rep;
