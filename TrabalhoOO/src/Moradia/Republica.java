@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
 
 import Calculo.RegraIgualitaria;
 import Execao.CategoriaNaoInformadaException;
+import Execao.DadosPessoaisIncompletosException;
+import Execao.ValorNaoInformadoException;
 import Gasto.Categoria;
 import Gasto.Despesa;
 import Gasto.SubCategoria;
@@ -39,21 +41,31 @@ public class Republica {
 		return moradores;
 	}
 
-	public void cadastroMorador(Republica rep) {
+	public void cadastroMorador(Republica rep) throws DadosPessoaisIncompletosException{
 		int opcao=0;
 		while (opcao == 0) {
 			String nomeMorador = JOptionPane.showInputDialog("Qual o nome do morador?");
+			if (nomeMorador.equals("")) {
+				throw new DadosPessoaisIncompletosException();
+			}
 			String emailMorador = JOptionPane.showInputDialog("Qual o email do morador ?");
-			float rendMorador = Float.parseFloat(JOptionPane.showInputDialog("Qual o rendimento do morador"));
-
+			if (emailMorador.equals("")) {
+				throw new DadosPessoaisIncompletosException();
+			}
+			
+			String rend = JOptionPane.showInputDialog("Qual o rendimento do morador");
+			double rendMorador;
+			rendMorador = tryParseDouble(rend,rep);
 			Morador morador = new Morador(nomeMorador, emailMorador, rendMorador);
 			moradores.add(morador);
 			Arquivo.escreverMorador(rep,morador);
 			opcao = JOptionPane.showConfirmDialog(null, "Deseja cadastrar outro morador?", "Cadastro de moradores", 0);
 
-		}
-		if (moradores.size() > 0) {
-			JOptionPane.showMessageDialog(null, "Foram cadastrados " + moradores.size() + " moradores");
+			
+				if (moradores.size() > 0) {
+					JOptionPane.showMessageDialog(null, "Foram cadastrados " + moradores.size() + " moradores");
+				
+			}
 		}
 	}
 
@@ -63,7 +75,7 @@ public class Republica {
 		if (nomeCategoria.equals("")) {
 			throw new CategoriaNaoInformadaException(nomeCategoria);
 		}
-		
+
 		Categoria cat = new Categoria(nomeCategoria);
 		categorias.add(cat);
 		return cat;
@@ -71,7 +83,7 @@ public class Republica {
 
 	// retorna a categoria pesquisada
 	public Categoria pesquisarCategoria(String nomeCategoria) {
-		//Categoria resposta = null;
+		// Categoria resposta = null;
 		for (Categoria cat : categorias) {
 
 			if (cat.getDescricaoCategoria().equalsIgnoreCase(nomeCategoria)) {
@@ -153,4 +165,12 @@ public class Republica {
 		regra.aplicarRegra(this);
 	}
 
+	static double tryParseDouble(String value,Republica rep) throws DadosPessoaisIncompletosException{
+		try {
+			Double valor = Double.parseDouble(value);
+			return valor;
+		} catch (NumberFormatException e) {
+			throw new DadosPessoaisIncompletosException();
+		}
+	}
 }
