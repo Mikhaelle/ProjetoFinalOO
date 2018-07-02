@@ -78,8 +78,12 @@ public class Main {
 	}
 
 	private static LinkedList<Republica> mudarNome(LinkedList<Republica> rep, int escolhaRep) {
-		String novoNome = JOptionPane
-				.showInputDialog("Insira o novo nome da República " + rep.get(escolhaRep).getNome());
+		
+		String novoNome = JOptionPane.showInputDialog("Insira o novo nome da República " + rep.get(escolhaRep).getNome());
+		if(novoNome== null) {
+			novoNome=rep.get(escolhaRep).getNome();
+			
+		}
 		rep.get(escolhaRep).setNome(novoNome);
 		return rep;
 	}

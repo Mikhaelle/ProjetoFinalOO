@@ -1,0 +1,2 @@
+tim,celular,50.0,telefonia
+caesb,caesb,80.0,agua
