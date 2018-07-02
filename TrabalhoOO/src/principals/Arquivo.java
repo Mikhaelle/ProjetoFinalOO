@@ -4,17 +4,20 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+
+import javax.swing.JOptionPane;
+
 import Moradia.Republica;
 import Moradia.Morador;
 
 
 public class Arquivo {
 
-	public static void escreverMorador(Morador novo) {
+	public static void escreverMorador(Republica rep, Morador novo) {
 		
 		try {
 			
-			File f= new File("Moradores.txt");
+			File f= new File(rep.getNome()+".txt");
 			FileWriter fw;
 			BufferedWriter bw;
 			
@@ -38,9 +41,9 @@ public class Arquivo {
 		}
 	}
 	
-	public static void excluirTxt(Morador mor) {
+	public static void excluirTxt(Republica rep, Morador mor) {
 		try {
-		File f= new File("Moradores.txt");
+		File f= new File(rep.getNome()+".txt");
 		if(f.exists()) {
 			FileReader fr= new FileReader(f);
 			BufferedReader br = new BufferedReader(fr);
@@ -112,7 +115,7 @@ public class Arquivo {
 	
 	public void buscar(String nomeB,Republica rep) {
 		try {
-			File f= new File("Moradores.txt");
+			File f= new File(rep.getNome()+".txt");
 			if(f.exists()) {
 				FileReader fr = new FileReader(f);
 				BufferedReader br = new BufferedReader(fr);
@@ -127,7 +130,7 @@ public class Arquivo {
 					Morador mor = new Morador(contato[0],contato[1],Double.parseDouble(contato[2]));
 					
 					System.out.println("Nome Encontrado!");
-					rep.cadastroMorador();
+					rep.cadastroMorador(rep);
 					}
 				}
 				br.close();
@@ -144,35 +147,34 @@ public class Arquivo {
 	
 	 
 
-////	public void imprimir() {
-//		try {
-//			File f=new File("Moradores.txt");
-//			if(f.exists()) {
-//				FileReader fr = new FileReader(f);
-//				BufferedReader br = new BufferedReader(fr);
-//				String linha;
-//				while((linha = br.readLine()) != null) {
-//					
-//					//(String nome, String email, String rendimento)
-//					
-//					String [] contato = linha.split(",");
-//					
-//					Morador m = new Morador(contato[0],contato[1],contato[2]);
-//					
-//					m.adicionarMorador();
-//					System.out.println("***********************");
-//						
-//				}
-//				fr.close();
-//				br.close();
-//			}
-//			else 
-//				{
-//				
-//				System.out.println("Arquivo não existe");
-//				}
-//				}catch(Exception e) {
-//					System.out.println(e);
-//				}
-//	}
+public static void loadMoradores(Republica rep) {
+	try {
+		File f=new File(rep.getNome()+".txt");
+		if(f.exists()) {
+			FileReader fr = new FileReader(f);
+			BufferedReader br = new BufferedReader(fr);
+			String linha;
+			while((linha = br.readLine()) != null) {
+					
+				//(String nome, String email, String rendimento)
+				
+				String [] contato = linha.split(",");
+					
+				Morador m = new Morador(contato[0],contato[1],Double.parseDouble(contato[2]));
+					
+				rep.getMoradores().add(m);
+				System.out.println("deu, mano");
+						
+			}
+			fr.close();
+			}
+			else{ 
+				
+				
+				System.out.println("Arquivo não existe");
+				}
+				}catch(Exception e) {
+					System.out.println(e);
+				}
+	}
 }

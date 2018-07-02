@@ -1,7 +1,2 @@
-teste,teste@teste.com,1000
-Marquinhos ,DJ@.com,100.0
-Filippe,testes,300.0
-ddd,ddd,123.0
-,,100.0
-acaa,aaa,1000.0
-dddd,dddd,102.0
+Renan,Rena@boçal.com,100.0
+Gabriel,Gabriel@migue,200.0
