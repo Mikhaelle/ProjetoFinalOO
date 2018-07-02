@@ -2,6 +2,8 @@ package Gasto;
 
 import java.util.LinkedList;
 
+import Execao.DescricaoNaoInformadaException;
+
 
 public class Categoria {
 	private String descricaoCategoria;
@@ -30,8 +32,11 @@ public class Categoria {
 	}
 	
 	//Metodo para cadastro de subcategorias, retorna verdadeiro ou falso ----- EXISTE EXCEÇÃO FALSO
-	public boolean cadastrarSubcategoria(String nomeSubcategoria) {
+	public boolean cadastrarSubcategoria(String nomeSubcategoria)throws  DescricaoNaoInformadaException {
 
+		if (nomeSubcategoria.equals("")) {
+			throw new DescricaoNaoInformadaException(nomeSubcategoria) ;
+		}
 			SubCategoria sub = new SubCategoria(nomeSubcategoria);
 			
 			return subs.add(sub);
@@ -40,16 +45,15 @@ public class Categoria {
 		
 	//pesquisa categoria por descricao
 		public SubCategoria pesquisarSubCategoria(String descricao) {
-			SubCategoria resposta = null;
 			for (SubCategoria sub : subs) {
 				
 				if (sub.getDescricaoSubCategoria().equalsIgnoreCase(descricao)) {
 					
-					resposta = sub;
+					return sub;
 				}
 			}
 
-			return resposta;
+			return null;
 		}
 
 	//retirar as subcategoria ---- TRATAR EXCEÇÃO EM ELSE "HOUVE ERRO"

@@ -7,6 +7,10 @@ import javax.swing.JOptionPane;
 
 import Calculo.RegraIgualitaria;
 import Calculo.RegraProporcional;
+import Execao.CategoriaNaoInformadaException;
+import Execao.DadosPessoaisIncompletosException;
+import Execao.DescricaoNaoInformadaException;
+import Execao.ValorNaoInformadoException;
 import Gasto.Categoria;
 import Gasto.Despesa;
 import Gasto.SubCategoria;
@@ -24,7 +28,7 @@ public class Main {
 			optMenu[i] = rep.get(i).getNome();
 		}
 		int escolhaRep = JOptionPane.showOptionDialog(null,
-				
+
 				"Bem vindo ao Gerenciador Financeiro para repúblicas\n\n Crie, delete ou escolha uma república que deseja editar",
 				"Gerenciador Financeiro - Seletor de República", 0, 1, null, optMenu, null);
 		return escolhaRep;
@@ -32,7 +36,7 @@ public class Main {
 
 	private static LinkedList<Republica> criarRepublica(LinkedList<Republica> rep) {
 		String nomeRep = JOptionPane.showInputDialog(null, "Por favor, insira o nome da nova república",
-				"Nova república", 1);		
+				"Nova república", 1);
 		Republica newRep = new Republica(nomeRep);
 		rep.add(newRep);
 		Arquivo.loadMoradores(newRep);
@@ -40,10 +44,9 @@ public class Main {
 	}
 
 	private static LinkedList<Republica> apagarRepublica(LinkedList<Republica> rep) {
-		if(rep.size()==0) {
+		if (rep.size() == 0) {
 			JOptionPane.showMessageDialog(null, "não há nenhuma república para apagar!");
-		}
-		else {
+		} else {
 			String titleApagar = "Apagar República";
 			String messageApagar = "Clique na república que deseja apagar";
 			String[] optApagar = new String[rep.size() + 1];
@@ -52,12 +55,12 @@ public class Main {
 			}
 			optApagar[rep.size()] = "Cancelar";
 			int escolha = JOptionPane.showOptionDialog(null, messageApagar, titleApagar, 0, 1, null, optApagar, null);
-			if (escolha >= 0 && escolha <= rep.size()) {
+			if (escolha >= 0 && escolha <= rep.size()) {	
 				rep.remove(escolha);
 			}
 		}
 		return rep;
-		
+
 	}
 
 	private static int editarRepublica(LinkedList<Republica> rep, int escolhaRep) {
@@ -86,19 +89,22 @@ public class Main {
 					"Editar Moradores", 0);
 			if (yesNo == 0) {
 				// essa é a opção "sim"
+				// try {
 				rep.get(escolhaRep).cadastroMorador(rep.get(escolhaRep));
+				// } catch (DadosPessoaisIncompletosException e) {
+				// e.printStackTrace();
+				// }
 			}
 		} else {
 			List<Morador> moradores = rep.get(escolhaRep).getMoradores();
 			String listaNomes = "Há " + moradores.size() + " moradores estão cadastrados na república "
 					+ rep.get(escolhaRep).getNome() + "\n";
 			String[] optionsMoradores = new String[moradores.size() + 4];
-//			if(rep.get(escolhaRep).categorias.size()>0) {
-//				RegraIgualitaria novaregra=new RegraIgualitaria(rep.get(escolhaRep));
-//				novaregra.aplicarRegra(rep.get(escolhaRep));
-//			}
+
+
 			for (int i = 0; i < moradores.size(); i++) {
-				listaNomes = listaNomes +"-"+ moradores.get(i).getNome() +"   =>R$"+moradores.get(i).getParcela() +"\n";
+				listaNomes = listaNomes + "-" + moradores.get(i).getNome() + "   =>R$" + moradores.get(i).getParcela()
+						+ "\n";
 				optionsMoradores[i] = moradores.get(i).getNome();
 			}
 			optionsMoradores[moradores.size()] = "Escolher Regra de divisão";
@@ -108,7 +114,7 @@ public class Main {
 			int escolhaMorador = JOptionPane.showOptionDialog(null, listaNomes, "Editar Moradores", 0, 1, null,
 					optionsMoradores, null);
 			String detalhesMorador = "Morador da república " + rep.get(escolhaRep).getNome() + "\nNome:";
-			if (escolhaMorador < moradores.size()&&escolhaMorador>=0) {
+			if (escolhaMorador < moradores.size() && escolhaMorador >= 0) {
 				detalhesMorador = detalhesMorador + moradores.get(escolhaMorador).getNome() + "\nEmail:"
 						+ moradores.get(escolhaMorador).getEmail() + "\nRendimento:"
 						+ moradores.get(escolhaMorador).getRend();
@@ -132,18 +138,20 @@ public class Main {
 							Double.parseDouble(JOptionPane.showInputDialog("Digite o novo Rendimento para o Morador")));
 				}
 			}
-			if(escolhaMorador==moradores.size()) {
-				String Mensagem="Qual dos métodos de divisão abaixo deseja aplicar na república "+ rep.get(escolhaRep).getNome()+"?";
-				String[] opcoesRegra=new String[2];
-				opcoesRegra[0]="Regra Igualitária";
-				opcoesRegra[1]="Regra Proporcional";
-				int escolhaRegra=JOptionPane.showOptionDialog(null, Mensagem, "Escolha do método de divisão", 0, 1, null, opcoesRegra, null);
-				if(escolhaRegra==0) {
-					RegraIgualitaria novaregra=new RegraIgualitaria(rep.get(escolhaRep));
+			if (escolhaMorador == moradores.size()) {
+				String Mensagem = "Qual dos métodos de divisão abaixo deseja aplicar na república "
+						+ rep.get(escolhaRep).getNome() + "?";
+				String[] opcoesRegra = new String[2];
+				opcoesRegra[0] = "Regra Igualitária";
+				opcoesRegra[1] = "Regra Proporcional";
+				int escolhaRegra = JOptionPane.showOptionDialog(null, Mensagem, "Escolha do método de divisão", 0, 1,
+						null, opcoesRegra, null);
+				if (escolhaRegra == 0) {
+					RegraIgualitaria novaregra = new RegraIgualitaria(rep.get(escolhaRep));
 					novaregra.aplicarRegra(rep.get(escolhaRep));
 				}
-				if(escolhaRegra==1) {
-					RegraProporcional novaregra=new RegraProporcional(rep.get(escolhaRep));
+				if (escolhaRegra == 1) {
+					RegraProporcional novaregra = new RegraProporcional(rep.get(escolhaRep));
 					novaregra.aplicarRegra(rep.get(escolhaRep));
 				}
 			}
@@ -159,22 +167,69 @@ public class Main {
 
 		return rep;
 	}
-	
+
 	private static int editarDespesaTotal(LinkedList<Republica> rep, int escolhaRep) {
-		String mensagem="Há um total de R$"+rep.get(escolhaRep).getValorDespesas()+" em despesas.\n As despesas estão divididas em "+rep.get(escolhaRep).categorias.size()+" categorias:\n\nSão essas:";
-		String listaCat="";
-		String[] opcoesCat=new String[rep.get(escolhaRep).categorias.size()+2];
-		for(int i=0;i<rep.get(escolhaRep).categorias.size();i++) {
-			listaCat=listaCat+"\n"+rep.get(escolhaRep).categorias.get(i).getDescricaoCategoria();
-			listaCat=listaCat+"     =>    "+rep.get(escolhaRep).categorias.get(i).getTotalCategoria();
-			opcoesCat[i]=rep.get(escolhaRep).categorias.get(i).getDescricaoCategoria();	
+		String mensagem = "Há um total de R$" + rep.get(escolhaRep).getValorDespesas()
+				+ " em despesas.\n As despesas estão divididas em " + rep.get(escolhaRep).categorias.size()
+				+ " categorias:\n\nSão essas:";
+		String listaCat = "";
+		String[] opcoesCat = new String[rep.get(escolhaRep).categorias.size() + 2];
+		for (int i = 0; i < rep.get(escolhaRep).categorias.size(); i++) {
+			listaCat = listaCat + "\n" + rep.get(escolhaRep).categorias.get(i).getDescricaoCategoria();
+			listaCat = listaCat + "     =>    " + rep.get(escolhaRep).categorias.get(i).getTotalCategoria();
+			opcoesCat[i] = rep.get(escolhaRep).categorias.get(i).getDescricaoCategoria();
 		}
-		opcoesCat[rep.get(escolhaRep).categorias.size()]="Criar nova Despesa";
-		opcoesCat[rep.get(escolhaRep).categorias.size()+1]="Voltar";
-		
-		int escolhaCat=JOptionPane.showOptionDialog(null, mensagem+listaCat, "Editar Despesas", 0, 1, null, opcoesCat, null);
-		
+		opcoesCat[rep.get(escolhaRep).categorias.size()] = "Criar nova Despesa";
+		opcoesCat[rep.get(escolhaRep).categorias.size() + 1] = "Voltar";
+
+		int escolhaCat = JOptionPane.showOptionDialog(null, mensagem + listaCat, "Editar Despesas", 0, 1, null,
+				opcoesCat, null);
+
 		return escolhaCat;
+	}
+
+	private static void criarDespesa(Republica rep) throws ValorNaoInformadoException {
+		String cat = JOptionPane.showInputDialog("Qual a Categoria da despesa?");
+		Categoria catExiste = rep.pesquisarCategoria(cat);
+
+		if (catExiste == null) {
+			try {
+				rep.novaCategoria(cat);
+			} catch (CategoriaNaoInformadaException e) {
+				JOptionPane.showMessageDialog(null, "Digite um nome válido");
+				criarDespesa(rep);
+				e.printStackTrace();
+			}
+		}
+
+		String sub = JOptionPane.showInputDialog("Qual a Subcategoria da despesa?");
+		SubCategoria subExiste = rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub);
+		if (subExiste == null) {
+
+			try {
+				if (rep.pesquisarCategoria(cat).cadastrarSubcategoria(sub)) {
+				}
+			} catch (DescricaoNaoInformadaException d) {
+				JOptionPane.showMessageDialog(null, "Digite um nome válido");
+				criarDespesa(rep);
+				d.printStackTrace();
+			}
+		}
+
+		// try {
+		String valor = JOptionPane.showInputDialog("Qual o valor da despesa?");
+		try {
+			double valorVerdadeiro = tryParseDouble(valor, rep);
+			String desc = JOptionPane.showInputDialog("Insira uma descrição ou data para a despesa");
+			Despesa desp = new Despesa(valorVerdadeiro, desc, rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub),
+					rep);
+
+			rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub).adicionarDespesa(desp);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Digite um valor válido");
+			criarDespesa(rep);
+			System.out.print(e);
+		}
 	}
 	
 	private static void excluirMorador(Republica rep,List<Morador> mor) {
@@ -186,43 +241,30 @@ public class Main {
 		int escolhaExcluir=JOptionPane.showOptionDialog(null, mensagem, "Excluir Morador", 0, 0, null, opcaoExcluir, null);
 		Arquivo.excluirTxt(rep,mor.get(escolhaExcluir));
 		mor.remove(escolhaExcluir);
-		
+
 	}
 	
-	private static void criarDespesa(Republica rep) {
-		String cat=JOptionPane.showInputDialog("Qual a Categoria da despesa?");
-		Categoria catExiste=rep.pesquisarCategoria(cat);
-		if (catExiste==null) {
-			rep.categorias.add(rep.novaCategoria(cat));
-		}
-		String sub=JOptionPane.showInputDialog("Qual a Subcategoria da despesa?");
-		SubCategoria subExiste=rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub);
-		if (subExiste==null) {
-			rep.pesquisarCategoria(cat).cadastrarSubcategoria(sub);
-		}
-		double valor=Double.parseDouble(JOptionPane.showInputDialog("Qual o valor da despesa?"));
-		String desc=JOptionPane.showInputDialog("Insira uma descrição ou data para a despesa");
-		Despesa desp=new Despesa(valor,desc,rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub),rep);
-		rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub).adicionarDespesa(desp);
-	}
+			
+	
 
 	private static void editarSub(SubCategoria sub) {
-		String listDesp="A SubCategoria "+sub.getDescricaoSubCategoria()+" corresponde a R$"+sub.getTotalSub()+" em despesas.\n As despesas dessa Subcategoria são:\n";
-		String[] opcoesDesp=new String[sub.getDesps().size()+1];
-		for(int i=0;i<sub.getDesps().size();i++) {
-			listDesp+="\n"+sub.getDesps().get(i).getDesc()+"   =>   "+sub.getDesps().get(i).getValor();
-			opcoesDesp[i]=sub.getDesps().get(i).getDesc();
+		String listDesp = "A SubCategoria " + sub.getDescricaoSubCategoria() + " corresponde a R$" + sub.getTotalSub()
+				+ " em despesas.\n As despesas dessa Subcategoria são:\n";
+		String[] opcoesDesp = new String[sub.getDesps().size() + 1];
+		for (int i = 0; i < sub.getDesps().size(); i++) {
+			listDesp += "\n" + sub.getDesps().get(i).getDesc() + "   =>   " + sub.getDesps().get(i).getValor();
+			opcoesDesp[i] = sub.getDesps().get(i).getDesc();
 		}
-		listDesp+="\n\n Deseja apagar alguma despesa, ou voltar?";
-		opcoesDesp[sub.getDesps().size()]="Voltar";
-		int apagarDesp=JOptionPane.showOptionDialog(null, listDesp, "Apagar Despesa", 0, 0, null, opcoesDesp, null);
-		if (apagarDesp>=0&&apagarDesp<sub.getDesps().size()) {
+		listDesp += "\n\n Deseja apagar alguma despesa, ou voltar?";
+		opcoesDesp[sub.getDesps().size()] = "Voltar";
+		int apagarDesp = JOptionPane.showOptionDialog(null, listDesp, "Apagar Despesa", 0, 0, null, opcoesDesp, null);
+		if (apagarDesp >= 0 && apagarDesp < sub.getDesps().size()) {
 			sub.retirarDespesa(sub.getDesps().get(apagarDesp));
 		}
-		
+
 	}
-	
-	public static void main(String[] args) {
+
+	public static void main(String[] args) throws ValorNaoInformadoException {
 		// core
 		int escolhaRep = 0;
 		boolean isOpen = true;
@@ -249,48 +291,62 @@ public class Main {
 					if (escolha == 1) {
 						rep = editarMoradores(rep, escolhaRep);
 					}
-					
-					if(escolha==2) {
-						int escolhaCat=0;
-						while(escolhaCat>=0&&escolhaCat<=rep.get(escolhaRep).categorias.size()) {
-							escolhaCat=editarDespesaTotal(rep,escolhaRep);			
-							if(escolhaCat==rep.get(escolhaRep).categorias.size()) {
+
+					if (escolha == 2) {
+						int escolhaCat = 0;
+						while (escolhaCat >= 0 && escolhaCat <= rep.get(escolhaRep).categorias.size()) {
+							escolhaCat = editarDespesaTotal(rep, escolhaRep);
+							if (escolhaCat == rep.get(escolhaRep).categorias.size()) {
+
 								criarDespesa(rep.get(escolhaRep));
+
 							}
-							if(escolhaCat>=0&&escolhaCat<rep.get(escolhaRep).categorias.size()){
-								LinkedList<SubCategoria> sub=rep.get(escolhaRep).categorias.get(escolhaCat).getSubs();
-								String listSubs="";
-								String[] opcaoSub= new String[sub.size()+1]; 
-								for(int i=0; i<sub.size();i++) {
-									listSubs+="\n"+sub.get(i).getDescricaoSubCategoria()+"   =>   "+sub.get(i).getTotalSub();
-									opcaoSub[i]=sub.get(i).getDescricaoSubCategoria();
-									
+							if (escolhaCat >= 0 && escolhaCat < rep.get(escolhaRep).categorias.size()) {
+								LinkedList<SubCategoria> sub = rep.get(escolhaRep).categorias.get(escolhaCat).getSubs();
+								String listSubs = "";
+								String[] opcaoSub = new String[sub.size() + 1];
+								for (int i = 0; i < sub.size(); i++) {
+									listSubs += "\n" + sub.get(i).getDescricaoSubCategoria() + "   =>   "
+											+ sub.get(i).getTotalSub();
+									opcaoSub[i] = sub.get(i).getDescricaoSubCategoria();
+
 								}
-								opcaoSub[sub.size()]="Voltar";
-								String mensagem="A categoria "+rep.get(escolhaRep).categorias.get(escolhaCat).getDescricaoCategoria()+
-										" corresponde a R$"+rep.get(escolhaRep).categorias.get(escolhaCat).getTotalCategoria()+
-										" das despesas da república.\n"+rep.get(escolhaRep).categorias.get(escolhaCat).getDescricaoCategoria()+
-										" possui as seguintes subCategorias:\n"+listSubs;
-								int escolhaSub=JOptionPane.showOptionDialog(null, mensagem, "Editar Categorias", 0, 1, null, opcaoSub, null);
-								if (escolhaSub>=0&&escolhaSub<sub.size()) {
+								opcaoSub[sub.size()] = "Voltar";
+								String mensagem = "A categoria "
+										+ rep.get(escolhaRep).categorias.get(escolhaCat).getDescricaoCategoria()
+										+ " corresponde a R$"
+										+ rep.get(escolhaRep).categorias.get(escolhaCat).getTotalCategoria()
+										+ " das despesas da república.\n"
+										+ rep.get(escolhaRep).categorias.get(escolhaCat).getDescricaoCategoria()
+										+ " possui as seguintes subCategorias:\n" + listSubs;
+								int escolhaSub = JOptionPane.showOptionDialog(null, mensagem, "Editar Categorias", 0, 1,
+										null, opcaoSub, null);
+								if (escolhaSub >= 0 && escolhaSub < sub.size()) {
 									editarSub(sub.get(escolhaSub));
 								}
 							}
-						
-						//editarSubs(rep,escolhaRep,escolhaCat);
-					
+
+							// editarSubs(rep,escolhaRep,escolhaCat);
+
 						}
 					}
-					if(escolha==3) {
-						republicaEscolhida=false;
+					if (escolha == 3) {
+						republicaEscolhida = false;
 					}
 				}
 			}
-					
-				
-		}
 
-			}
+		}
 
 	}
 
+	static double tryParseDouble(String value, Republica rep) throws ValorNaoInformadoException {
+		try {
+			Double valor = Double.parseDouble(value);
+			return valor;
+		} catch (NumberFormatException e) {
+			throw new ValorNaoInformadoException(value);
+		}
+	}
+
+}
