@@ -37,11 +37,16 @@ public class Main {
 	private static LinkedList<Republica> criarRepublica(LinkedList<Republica> rep) {
 		String nomeRep = JOptionPane.showInputDialog(null, "Por favor, insira o nome da nova república",
 				"Nova república", 1);
-		Republica newRep = new Republica(nomeRep);
-		rep.add(newRep);
-		System.out.println("teste1");
-		Arquivo.loadMoradores(newRep);
-		Arquivo.loadDespesas(newRep);
+		if (nomeRep.equals("")) {
+			JOptionPane.showMessageDialog(null, "Digite um nome!");
+			criarRepublica(rep);
+		} else {
+			Republica newRep = new Republica(nomeRep);
+			rep.add(newRep);
+			System.out.println("teste1");
+			Arquivo.loadMoradores(newRep);
+			Arquivo.loadDespesas(newRep);
+		}
 		return rep;
 	}
 
@@ -62,27 +67,28 @@ public class Main {
 			}
 		}
 		return rep;
-
 	}
 
 	private static int editarRepublica(LinkedList<Republica> rep, int escolhaRep) {
 		String message = "República " + rep.get(escolhaRep).getNome() + "\n\nO que deseja fazer?";
 		String[] options = new String[4];
-		options[0] = "Editar Nome";
-		options[1] = "Editar Moradores";
-		options[2] = "Editar Despesas";
+		options[0] = "Editar Nome da republica";
+		options[1] = "Moradores";
+		options[2] = "Despesas";
 		options[3] = "Voltar à seleção de repúblicas";
-		String title = "Editar República " + rep.get(escolhaRep).getNome();
+		String title = "República " + rep.get(escolhaRep).getNome();
 		int escolha = JOptionPane.showOptionDialog(null, message, title, 0, 1, null, options, null);
 		return escolha;
 	}
 
 	private static LinkedList<Republica> mudarNome(LinkedList<Republica> rep, int escolhaRep) {
-		
-		String novoNome = JOptionPane.showInputDialog("Insira o novo nome da República " + rep.get(escolhaRep).getNome());
-		if(novoNome== null) {
-			novoNome=rep.get(escolhaRep).getNome();
-			
+
+		String novoNome = JOptionPane
+				.showInputDialog("Insira o novo nome da República " + rep.get(escolhaRep).getNome());
+		if (novoNome.equals("")) {
+			JOptionPane.showMessageDialog(null, "Digite um nome!");
+			return mudarNome(rep, escolhaRep);
+
 		}
 		rep.get(escolhaRep).setNome(novoNome);
 		return rep;
@@ -102,22 +108,22 @@ public class Main {
 					e.printStackTrace();
 				}
 			}
-			
+
 		} else {
 			List<Morador> moradores = rep.get(escolhaRep).getMoradores();
-			String listaNomes = "Há " + moradores.size() + " moradores estão cadastrados na república "
+			String listaNomes = "Há " + moradores.size() + " moradores cadastrados na república "
 					+ rep.get(escolhaRep).getNome() + "\n";
 			String[] optionsMoradores = new String[moradores.size() + 4];
 
 			for (int i = 0; i < moradores.size(); i++) {
-				listaNomes = listaNomes + "-" + moradores.get(i).getNome() + "   =>R$" + moradores.get(i).getParcela()
-						+ "\n";
+				listaNomes = listaNomes + "Contribuição de " + moradores.get(i).getNome() + " => R$ "
+						+ moradores.get(i).getParcela() + "\n";
 				optionsMoradores[i] = moradores.get(i).getNome();
 			}
 			optionsMoradores[moradores.size()] = "Escolher Regra de divisão";
-			optionsMoradores[moradores.size()+2] = "Excluir Morador";
-			optionsMoradores[moradores.size()+1] = "Novo Morador";
-			optionsMoradores[moradores.size()+3] = "cancelar";
+			optionsMoradores[moradores.size() + 2] = "Excluir Morador";
+			optionsMoradores[moradores.size() + 1] = "Adicionar Morador";
+			optionsMoradores[moradores.size() + 3] = "cancelar";
 
 			int escolhaMorador = JOptionPane.showOptionDialog(null, listaNomes, "Editar Moradores", 0, 1, null,
 					optionsMoradores, null);
@@ -231,21 +237,26 @@ public class Main {
 
 		// try {
 		String valor = JOptionPane.showInputDialog("Qual o valor da despesa?");
-		double valorVerdadeiro=0;
-		String desc="";
+		double valorVerdadeiro = 0;
 		try {
 			valorVerdadeiro = tryParseDouble(valor, rep);
-			desc = JOptionPane.showInputDialog("Insira uma descrição ou data para a despesa");
-			Despesa desp = new Despesa(valorVerdadeiro, desc, rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub),
-					rep);
+			try {
+				String desc = JOptionPane.showInputDialog("Insira uma descrição ou data para a despesa");
+				Despesa desp = new Despesa(valorVerdadeiro, desc,
+						rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub), rep);
+				rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub).adicionarDespesa(desp);
+				Arquivo.escreverDespesa(rep, desc, sub, valorVerdadeiro, cat);
 
-			rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub).adicionarDespesa(desp);
+			} catch (DescricaoNaoInformadaException d) {
+				JOptionPane.showMessageDialog(null, "Adicione uma descrição");
+				criarDespesa(rep);
+			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Digite um valor válido");
 			criarDespesa(rep);
 			System.out.print(e);
 		}
-		Arquivo.escreverDespesa(rep, desc, sub, valorVerdadeiro, cat);
+
 	}
 
 	private static void excluirMorador(Republica rep, List<Morador> mor) {
@@ -261,7 +272,7 @@ public class Main {
 
 	}
 
-	private static void editarSub(Republica rep,SubCategoria sub) {
+	private static void editarSub(Republica rep, SubCategoria sub) {
 		String listDesp = "A SubCategoria " + sub.getDescricaoSubCategoria() + " corresponde a R$" + sub.getTotalSub()
 				+ " em despesas.\n As despesas dessa Subcategoria são:\n";
 		String[] opcoesDesp = new String[sub.getDesps().size() + 1];
@@ -274,7 +285,7 @@ public class Main {
 		int apagarDesp = JOptionPane.showOptionDialog(null, listDesp, "Apagar Despesa", 0, 0, null, opcoesDesp, null);
 		if (apagarDesp >= 0 && apagarDesp < sub.getDesps().size()) {
 			sub.retirarDespesa(sub.getDesps().get(apagarDesp));
-			Arquivo.excluirDespTxt(rep,sub.getDesps().get(apagarDesp).getDesc());
+			Arquivo.excluirDespTxt(rep, sub.getDesps().get(apagarDesp).getDesc());
 		}
 
 	}
@@ -337,7 +348,7 @@ public class Main {
 								int escolhaSub = JOptionPane.showOptionDialog(null, mensagem, "Editar Categorias", 0, 1,
 										null, opcaoSub, null);
 								if (escolhaSub >= 0 && escolhaSub < sub.size()) {
-									editarSub(rep.get(escolhaRep),sub.get(escolhaSub));
+									editarSub(rep.get(escolhaRep), sub.get(escolhaSub));
 								}
 							}
 

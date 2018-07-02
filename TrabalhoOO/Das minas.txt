@@ -1,0 +1,2 @@
+Mikha,mikha@gmail.com,1200.0
+Camila,camila@gmail.com,1500.0

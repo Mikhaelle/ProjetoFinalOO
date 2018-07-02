@@ -1,0 +1,2 @@
+14/12,aluguel,900.0,casa
+11/12,agua,50.0,casa

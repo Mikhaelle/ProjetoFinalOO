@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import Calculo.RegraIgualitaria;
 import Execao.CategoriaNaoInformadaException;
 import Execao.DadosPessoaisIncompletosException;
+import Execao.DescricaoNaoInformadaException;
 import Execao.ValorNaoInformadoException;
 import Gasto.Categoria;
 import Gasto.Despesa;
@@ -123,7 +124,11 @@ public class Republica {
 			SubCategoria subCat = cat.pesquisarSubCategoria(nomeSubCategoria);
 
 			if (subCat != null) {
-				desp = new Despesa(valor, descricao, subCat, this);
+				try {
+					desp = new Despesa(valor, descricao, subCat, this);
+				} catch (DescricaoNaoInformadaException e) {
+					e.printStackTrace();
+				}
 				subCat.adicionarDespesa(desp); // adc despesa na subCategoria
 				return despesas.add(desp); // retorna verdadeiro para despesa cadastrada
 
@@ -142,7 +147,11 @@ public class Republica {
 
 			SubCategoria subCat = cat.pesquisarSubCategoria(nomeSubCategoria);
 			if (subCat != null) {
-				desp = new Despesa(valor, descricao, subCat, this);
+				try {
+					desp = new Despesa(valor, descricao, subCat, this);
+				} catch (DescricaoNaoInformadaException e) {
+					e.printStackTrace();
+				}
 				subCat.retirarDespesa(desp); // retira despesa na subCategoria
 				return despesas.remove(desp); // retorna verdadeiro para despesa retirada
 			}

@@ -1,6 +1,7 @@
 package Gasto;
 
 
+import Execao.DescricaoNaoInformadaException;
 import Moradia.Republica;
 
 public class Despesa {
@@ -10,7 +11,10 @@ public class Despesa {
 	SubCategoria sub;
 	Republica rep;
 
-	public Despesa(double v,String desc, SubCategoria a, Republica r) {
+	public Despesa(double v,String desc, SubCategoria a, Republica r) throws  DescricaoNaoInformadaException {
+		if (desc.equals("")) {
+			throw new DescricaoNaoInformadaException(desc);
+		}
 		valor = v;
 		descricao=desc;
 		sub = a;

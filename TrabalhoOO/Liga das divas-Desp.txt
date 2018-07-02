@@ -1,0 +1,5 @@
+apr,aluguel,700.0,Casa
+14,agua,55.0,casa
+17,luz,60.0,casa
+14,internet,100.0,telecom
+11,luz,10.0,casa

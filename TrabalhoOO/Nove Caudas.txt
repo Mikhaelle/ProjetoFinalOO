@@ -1,2 +1,4 @@
 Renan,Renan@,100.0
 joao,joao@,100.0
+
+carlos,carlos@gmail.com,1200.0
