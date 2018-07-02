@@ -1,3 +1,2 @@
 Renan,Renan@,100.0
-Joao,Joao@,200.0
-
+joao,joao@,100.0

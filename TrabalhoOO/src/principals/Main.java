@@ -163,10 +163,10 @@ public class Main {
 					novaregra.aplicarRegra(rep.get(escolhaRep));
 				}
 			}
-			if (escolhaMorador == moradores.size() + 1) {
+			if (escolhaMorador == moradores.size() + 2) {
 				excluirMorador(rep.get(escolhaRep), rep.get(escolhaRep).getMoradores());
 			}
-			if (escolhaMorador == moradores.size() + 2) {
+			if (escolhaMorador == moradores.size() + 1) {
 				try {
 					rep.get(escolhaRep).cadastroMorador(rep.get(escolhaRep));
 				} catch (DadosPessoaisIncompletosException e) {
