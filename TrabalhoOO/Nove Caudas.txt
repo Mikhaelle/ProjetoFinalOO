@@ -1,1 +1,2 @@
-Renan,Renan@boçal,100.0
+Renan,Renan@,100.0
+Joao,Joao@,200.0

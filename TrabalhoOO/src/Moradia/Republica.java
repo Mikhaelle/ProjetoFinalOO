@@ -16,9 +16,9 @@ public class Republica {
 
 	private String nome;
 
-	public List<Categoria> categorias = new LinkedList<Categoria>();
+	public LinkedList<Categoria> categorias = new LinkedList<Categoria>();
 
-	public List<Despesa> despesas = new LinkedList<Despesa>();
+	public LinkedList<Despesa> despesas = new LinkedList<Despesa>();
 
 	public Republica(String n) {
 		nome = n;
@@ -53,7 +53,7 @@ public class Republica {
 
 		}
 		if (moradores.size() > 0) {
-			JOptionPane.showMessageDialog(null, "Foram cadastrados " + moradores.size() + " moradores");
+			JOptionPane.showMessageDialog(null, "Existem cadastrados " + moradores.size() + " moradores");
 		}
 	}
 

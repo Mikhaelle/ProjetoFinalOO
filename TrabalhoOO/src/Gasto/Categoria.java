@@ -18,7 +18,7 @@ public class Categoria {
 		return descricaoCategoria;
 	}
 
-	LinkedList<SubCategoria> subs = new LinkedList<SubCategoria>(); // Lista de subcategorias
+	public LinkedList<SubCategoria> subs = new LinkedList<SubCategoria>(); // Lista de subcategorias
 
 	public double getTotalCategoria() {
 		double total=0;
