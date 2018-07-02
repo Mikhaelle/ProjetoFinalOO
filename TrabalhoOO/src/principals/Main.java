@@ -88,8 +88,6 @@ public class Main {
 					"Não há nenhum morador cadastrado nessa república!\n\nDeseja cadastrar um morador?",
 					"Editar Moradores", 0);
 			if (yesNo == 0) {
-				// essa é a opção "sim"
-				// try {
 				try {
 					rep.get(escolhaRep).cadastroMorador(rep.get(escolhaRep));
 				} catch (DadosPessoaisIncompletosException e) {
@@ -97,10 +95,8 @@ public class Main {
 					editarMoradores(rep, escolhaRep);
 					e.printStackTrace();
 				}
-				// } catch (DadosPessoaisIncompletosException e) {
-				// e.printStackTrace();
-				// }
 			}
+			
 		} else {
 			List<Morador> moradores = rep.get(escolhaRep).getMoradores();
 			String listaNomes = "Há " + moradores.size() + " moradores estão cadastrados na república "

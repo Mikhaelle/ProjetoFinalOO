@@ -1,3 +1,3 @@
-Mikha,mikha@gmail.com,1000.0
 Rafa,rafa@gmail.com,1000.0
-Carla,carla@gmail.com,1000.0
+carl ,carl@...,1200.0
+lili,lili,1200.0
