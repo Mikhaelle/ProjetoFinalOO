@@ -1,0 +1,3 @@
+tim,celular,50.0,Telefonia
+ceb,Ceb,598.0,Energia
+null,almoco,500.0,comida

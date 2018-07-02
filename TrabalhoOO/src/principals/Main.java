@@ -39,7 +39,9 @@ public class Main {
 				"Nova república", 1);
 		Republica newRep = new Republica(nomeRep);
 		rep.add(newRep);
+		System.out.println("teste1");
 		Arquivo.loadMoradores(newRep);
+		Arquivo.loadDespesas(newRep);
 		return rep;
 	}
 
@@ -76,8 +78,12 @@ public class Main {
 	}
 
 	private static LinkedList<Republica> mudarNome(LinkedList<Republica> rep, int escolhaRep) {
-		String novoNome = JOptionPane
-				.showInputDialog("Insira o novo nome da República " + rep.get(escolhaRep).getNome());
+		
+		String novoNome = JOptionPane.showInputDialog("Insira o novo nome da República " + rep.get(escolhaRep).getNome());
+		if(novoNome== null) {
+			novoNome=rep.get(escolhaRep).getNome();
+			
+		}
 		rep.get(escolhaRep).setNome(novoNome);
 		return rep;
 	}
@@ -109,9 +115,10 @@ public class Main {
 				optionsMoradores[i] = moradores.get(i).getNome();
 			}
 			optionsMoradores[moradores.size()] = "Escolher Regra de divisão";
-			optionsMoradores[moradores.size() + 1] = "Excluir Morador";
-			optionsMoradores[moradores.size() + 2] = "Novo Morador";
-			optionsMoradores[moradores.size() + 3] = "cancelar";
+			optionsMoradores[moradores.size()+2] = "Excluir Morador";
+			optionsMoradores[moradores.size()+1] = "Novo Morador";
+			optionsMoradores[moradores.size()+3] = "cancelar";
+
 			int escolhaMorador = JOptionPane.showOptionDialog(null, listaNomes, "Editar Moradores", 0, 1, null,
 					optionsMoradores, null);
 			String detalhesMorador = "Morador da república " + rep.get(escolhaRep).getNome() + "\nNome:";
@@ -156,10 +163,10 @@ public class Main {
 					novaregra.aplicarRegra(rep.get(escolhaRep));
 				}
 			}
-			if (escolhaMorador == moradores.size() + 1) {
+			if (escolhaMorador == moradores.size() + 2) {
 				excluirMorador(rep.get(escolhaRep), rep.get(escolhaRep).getMoradores());
 			}
-			if (escolhaMorador == moradores.size() + 2) {
+			if (escolhaMorador == moradores.size() + 1) {
 				try {
 					rep.get(escolhaRep).cadastroMorador(rep.get(escolhaRep));
 				} catch (DadosPessoaisIncompletosException e) {
@@ -224,9 +231,11 @@ public class Main {
 
 		// try {
 		String valor = JOptionPane.showInputDialog("Qual o valor da despesa?");
+		double valorVerdadeiro=0;
+		String desc="";
 		try {
-			double valorVerdadeiro = tryParseDouble(valor, rep);
-			String desc = JOptionPane.showInputDialog("Insira uma descrição ou data para a despesa");
+			valorVerdadeiro = tryParseDouble(valor, rep);
+			desc = JOptionPane.showInputDialog("Insira uma descrição ou data para a despesa");
 			Despesa desp = new Despesa(valorVerdadeiro, desc, rep.pesquisarCategoria(cat).pesquisarSubCategoria(sub),
 					rep);
 
@@ -236,6 +245,7 @@ public class Main {
 			criarDespesa(rep);
 			System.out.print(e);
 		}
+		Arquivo.escreverDespesa(rep, desc, sub, valorVerdadeiro, cat);
 	}
 
 	private static void excluirMorador(Republica rep, List<Morador> mor) {
@@ -251,7 +261,7 @@ public class Main {
 
 	}
 
-	private static void editarSub(SubCategoria sub) {
+	private static void editarSub(Republica rep,SubCategoria sub) {
 		String listDesp = "A SubCategoria " + sub.getDescricaoSubCategoria() + " corresponde a R$" + sub.getTotalSub()
 				+ " em despesas.\n As despesas dessa Subcategoria são:\n";
 		String[] opcoesDesp = new String[sub.getDesps().size() + 1];
@@ -264,6 +274,7 @@ public class Main {
 		int apagarDesp = JOptionPane.showOptionDialog(null, listDesp, "Apagar Despesa", 0, 0, null, opcoesDesp, null);
 		if (apagarDesp >= 0 && apagarDesp < sub.getDesps().size()) {
 			sub.retirarDespesa(sub.getDesps().get(apagarDesp));
+			Arquivo.excluirDespTxt(rep,sub.getDesps().get(apagarDesp).getDesc());
 		}
 
 	}
@@ -326,7 +337,7 @@ public class Main {
 								int escolhaSub = JOptionPane.showOptionDialog(null, mensagem, "Editar Categorias", 0, 1,
 										null, opcaoSub, null);
 								if (escolhaSub >= 0 && escolhaSub < sub.size()) {
-									editarSub(sub.get(escolhaSub));
+									editarSub(rep.get(escolhaRep),sub.get(escolhaSub));
 								}
 							}
 

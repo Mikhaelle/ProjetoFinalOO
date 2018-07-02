@@ -1,0 +1,3 @@
+marcos,marcos@gmail.com,500.0
+PAulo,paulo@gmail.com,800.0
+Rafael,rafael@gmail.com,333.0

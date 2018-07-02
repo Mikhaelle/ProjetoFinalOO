@@ -7,7 +7,7 @@ public class SubCategoria {
 	
 	
 	
-	LinkedList <Despesa> desps = new LinkedList<Despesa>();
+	public LinkedList <Despesa> desps = new LinkedList<Despesa>();
 	
 	public SubCategoria(String dec) {
 		descricaoSubCategoria = dec;
